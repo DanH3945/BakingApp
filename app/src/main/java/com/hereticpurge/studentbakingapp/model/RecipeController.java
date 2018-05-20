@@ -9,19 +9,19 @@ public final class RecipeController {
     private static final String TAG = "RecipeController";
 
     private ArrayList<Recipe> mRecipeList;
-    private static RecipeController mController;
+    private static RecipeController sController;
 
     private RecipeController(){
         mRecipeList = new ArrayList<>();
     }
 
     public static RecipeController getController(){
-        if (mController == null){
-            mController = new RecipeController();
+        if (sController == null){
+            sController = new RecipeController();
             Log.d(TAG, "getController: Created controller");
         }
         Log.d(TAG, "getController: Returning controller");
-        return mController;
+        return sController;
     }
 
     public ArrayList<Recipe> getRecipeList(){
