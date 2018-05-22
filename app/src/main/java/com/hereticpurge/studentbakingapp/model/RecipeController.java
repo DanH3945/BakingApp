@@ -18,14 +18,11 @@ public final class RecipeController {
     public static RecipeController getController(){
         if (sController == null){
             sController = new RecipeController();
-            Log.d(TAG, "getController: Created controller");
         }
-        Log.d(TAG, "getController: Returning controller");
         return sController;
     }
 
     public ArrayList<Recipe> getRecipeList(){
-        Log.d(TAG, "getRecipeList: Returning recipe list");
         return mRecipeList;
     }
 

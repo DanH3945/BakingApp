@@ -24,7 +24,6 @@ public final class NetworkUtils {
     public static void queryRecipeJson(String url, final String requestTag, Context context, final VolleyResponseListener volleyResponseListener) {
 
         RequestQueue queue = Volley.newRequestQueue(context);
-        Log.d(TAG, "queryRecipeJson: Request queue created");
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -32,7 +31,6 @@ public final class NetworkUtils {
                     public void onResponse(String response) {
 
                         volleyResponseListener.onVolleyResponse(response, requestTag);
-                        Log.d(TAG, "onResponse: Successful volley response");
 
                     }
                 },
@@ -41,14 +39,11 @@ public final class NetworkUtils {
                     public void onErrorResponse(VolleyError error) {
 
                         volleyResponseListener.onVolleyErrorResponse(error, requestTag);
-                        Log.d(TAG, "onErrorResponse: Error volley response");
 
                     }
                 });
-        Log.d(TAG, "queryRecipeJson: String request created");
 
         stringRequest.setTag(requestTag);
         queue.add(stringRequest);
-        Log.d(TAG, "queryRecipeJson: String request added to queue");
     }
 }
