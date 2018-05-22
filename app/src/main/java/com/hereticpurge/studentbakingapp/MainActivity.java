@@ -5,15 +5,13 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.hereticpurge.studentbakingapp.model.RecipeController;
 import com.hereticpurge.studentbakingapp.utilities.JsonUtils;
 import com.hereticpurge.studentbakingapp.utilities.NetworkUtils;
 
 public class MainActivity extends AppCompatActivity implements VolleyResponseListener {
 
     private static final String TAG = "MainActivity";
-    private static final String VOLLEY_DEFAULT_TAG = "volleyDefault";
-    RecipeController mController;
+    private static final String VOLLEY_INITIAL_QUERY_TAG = "volleyInitialQuery";
 
 
     @Override
@@ -21,9 +19,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mController = RecipeController.getController();
-
-        NetworkUtils.queryRecipeJson(VOLLEY_DEFAULT_TAG, this, this);
+        NetworkUtils.queryRecipeJson(VOLLEY_INITIAL_QUERY_TAG, this, this);
 
     }
 
@@ -32,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
 
         // switch statement to handle incoming responses incase more need to be added later.
         switch (requestTag){
-            case VOLLEY_DEFAULT_TAG:
+            case VOLLEY_INITIAL_QUERY_TAG:
                 JsonUtils.populateRecipesFromJson(jsonString);
 
             default:
