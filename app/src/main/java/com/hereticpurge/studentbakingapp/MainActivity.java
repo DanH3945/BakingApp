@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         // switch statement to handle incoming responses incase more need to be added later.
         switch (requestTag){
             case VOLLEY_DEFAULT_TAG:
-                JsonUtils.populateRecipesFromJson(jsonString, mController);
+                JsonUtils.populateRecipesFromJson(jsonString);
 
             default:
                 Toast.makeText(this, R.string.volley_response_error, Toast.LENGTH_LONG).show();
