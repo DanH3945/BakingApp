@@ -6,10 +6,10 @@ public class RecipeBuilder {
 
     //step map TAGs
     public static final String STEP_ID = "id";
-    public static final String STEP_SHORT_DESCRIPTION = "shortDesc";
+    public static final String STEP_SHORT_DESCRIPTION = "shortDescription";
     public static final String STEP_DESCRIPTION = "description";
-    public static final String STEP_VIDEO_URL = "videoUrl";
-    public static final String STEP_THUMBNAIL_URL = "thumbUrl";
+    public static final String STEP_VIDEO_URL = "videoURL";
+    public static final String STEP_THUMBNAIL_URL = "thumbnailURL";
 
     //ingredient map TAGs
     public static final String INGREDIENT_QUANTITY = "quantity";

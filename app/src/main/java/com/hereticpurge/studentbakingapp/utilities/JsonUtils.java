@@ -36,9 +36,9 @@ public final class JsonUtils {
                     JSONObject ingredientObject = ingredientArray.getJSONObject(x);
 
                     Map<String, String> ingredient = new HashMap<>();
-                    ingredient.put(RecipeBuilder.INGREDIENT_QUANTITY, ingredientObject.getString("quantity"));
-                    ingredient.put(RecipeBuilder.INGREDIENT_MEASURE, ingredientObject.getString("measure"));
-                    ingredient.put(RecipeBuilder.INGREDIENT, ingredientObject.getString("ingredient"));
+                    ingredient.put(RecipeBuilder.INGREDIENT_QUANTITY, ingredientObject.getString(RecipeBuilder.INGREDIENT_QUANTITY));
+                    ingredient.put(RecipeBuilder.INGREDIENT_MEASURE, ingredientObject.getString(RecipeBuilder.INGREDIENT_MEASURE));
+                    ingredient.put(RecipeBuilder.INGREDIENT, ingredientObject.getString(RecipeBuilder.INGREDIENT));
                     builder.addIngredient(ingredient);
                 }
 
@@ -48,11 +48,11 @@ public final class JsonUtils {
                     JSONObject stepObject = stepArray.getJSONObject(y);
 
                     Map<String, String> step = new HashMap<>();
-                    step.put(RecipeBuilder.STEP_ID, stepObject.getString("id"));
-                    step.put(RecipeBuilder.STEP_SHORT_DESCRIPTION, stepObject.getString("shortDescription"));
-                    step.put(RecipeBuilder.STEP_DESCRIPTION, stepObject.getString("description"));
-                    step.put(RecipeBuilder.STEP_VIDEO_URL, stepObject.getString("videoURL"));
-                    step.put(RecipeBuilder.STEP_THUMBNAIL_URL, stepObject.getString("thumbnailURL"));
+                    step.put(RecipeBuilder.STEP_ID, stepObject.getString(RecipeBuilder.STEP_ID));
+                    step.put(RecipeBuilder.STEP_SHORT_DESCRIPTION, stepObject.getString(RecipeBuilder.STEP_SHORT_DESCRIPTION));
+                    step.put(RecipeBuilder.STEP_DESCRIPTION, stepObject.getString(RecipeBuilder.STEP_DESCRIPTION));
+                    step.put(RecipeBuilder.STEP_VIDEO_URL, stepObject.getString(RecipeBuilder.STEP_VIDEO_URL));
+                    step.put(RecipeBuilder.STEP_THUMBNAIL_URL, stepObject.getString(RecipeBuilder.STEP_THUMBNAIL_URL));
 
                     builder.addStep(step);
                 }

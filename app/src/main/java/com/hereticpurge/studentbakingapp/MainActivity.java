@@ -2,6 +2,7 @@ package com.hereticpurge.studentbakingapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -11,7 +12,7 @@ import com.hereticpurge.studentbakingapp.utilities.NetworkUtils;
 public class MainActivity extends AppCompatActivity implements VolleyResponseListener {
 
     private static final String TAG = "MainActivity";
-    private static final String VOLLEY_INITIAL_QUERY_TAG = "volleyInitialQuery";
+    private static final String VOLLEY_INITIAL_QUERY_TAG = "VolleyInitQuery";
 
 
     @Override
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         switch (requestTag){
             case VOLLEY_INITIAL_QUERY_TAG:
                 JsonUtils.populateRecipesFromJson(jsonString);
+                break;
 
             default:
                 Toast.makeText(this, R.string.volley_response_error, Toast.LENGTH_LONG).show();
