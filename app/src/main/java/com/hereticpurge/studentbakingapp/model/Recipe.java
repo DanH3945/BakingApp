@@ -2,13 +2,8 @@ package com.hereticpurge.studentbakingapp.model;
 
 import java.util.ArrayList;
 
-/**
- * Created by Dilbert on 5/17/2018.
- */
-
 public class Recipe {
 
-    private static final String TAG = "Recipe";
     private String mRecipeId;
     private String mRecipeTitle;
     private ArrayList<RecipeStep> mRecipeSteps;

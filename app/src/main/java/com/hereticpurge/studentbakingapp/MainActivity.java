@@ -9,6 +9,8 @@ import com.android.volley.VolleyError;
 import com.hereticpurge.studentbakingapp.utilities.JsonUtils;
 import com.hereticpurge.studentbakingapp.utilities.NetworkUtils;
 
+import timber.log.Timber;
+
 public class MainActivity extends AppCompatActivity implements VolleyResponseListener {
 
     private static final String TAG = "MainActivity";
@@ -18,6 +20,15 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (BuildConfig.DEBUG) {
+            // debug tree logging
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            // release tree logging
+            Timber.plant(new TimberReleaseTree());
+        }
+
         setContentView(R.layout.activity_main);
 
         NetworkUtils.queryRecipeJson(VOLLEY_INITIAL_QUERY_TAG, this, this);
@@ -35,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
 
             default:
                 Toast.makeText(this, R.string.volley_response_error, Toast.LENGTH_LONG).show();
+                Timber.w("OnVolleyResponse: Volley Response Switch Failure");
         }
 
     }
@@ -42,5 +54,6 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
     @Override
     public void onVolleyErrorResponse(VolleyError volleyError, String requestTag) {
         Toast.makeText(this, R.string.network_error, Toast.LENGTH_LONG).show();
+        Timber.d("OnVolleyErrorResponse: Volley Network Error");
     }
 }

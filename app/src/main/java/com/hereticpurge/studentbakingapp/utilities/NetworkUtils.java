@@ -11,6 +11,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.hereticpurge.studentbakingapp.VolleyResponseListener;
 
+import timber.log.Timber;
+
 public final class NetworkUtils {
 
     private static final String TAG = "NetworkUtils";
@@ -19,10 +21,11 @@ public final class NetworkUtils {
     // Overloaded the method to accept both outside url input as well as the default url from above.  Not used now but for future proofing.
     public static void queryRecipeJson(String requestTag, Context context, VolleyResponseListener volleyResponseListener){
         queryRecipeJson(RECIPE_URL, requestTag, context, volleyResponseListener);
+        Timber.i("Query started without URL.  Using Default");
     }
 
     public static void queryRecipeJson(String url, final String requestTag, Context context, final VolleyResponseListener volleyResponseListener) {
-
+        Timber.i("Query started with URL");
         RequestQueue queue = Volley.newRequestQueue(context);
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

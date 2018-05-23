@@ -7,8 +7,6 @@ import java.util.Map;
 
 public final class RecipeController {
 
-    private static final String TAG = "RecipeController";
-
     private final ArrayList<Recipe> sRecipeList = new ArrayList<>();
     private static RecipeController sController;
 

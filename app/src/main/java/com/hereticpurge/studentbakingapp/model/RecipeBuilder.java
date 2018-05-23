@@ -2,6 +2,8 @@ package com.hereticpurge.studentbakingapp.model;
 
 import java.util.Map;
 
+import timber.log.Timber;
+
 public class RecipeBuilder {
 
     //step map TAGs
@@ -57,6 +59,7 @@ public class RecipeBuilder {
     public void build() {
         if (!mBuilt) {
             sController.addRecipe(mCurrentRecipe);
+            Timber.d("Recipe built");
         }
         mBuilt = true;
     }
