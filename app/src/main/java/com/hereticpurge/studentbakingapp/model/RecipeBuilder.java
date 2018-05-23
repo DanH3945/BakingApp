@@ -32,11 +32,19 @@ public class RecipeBuilder {
 
     public RecipeBuilder setId(String id) {
         mCurrentRecipe.setRecipeId(id);
+        Timber.v("ID set");
         return this;
     }
 
     public RecipeBuilder setTitle(String title) {
         mCurrentRecipe.setRecipeTitle(title);
+        Timber.v("Title Set");
+        return this;
+    }
+
+    public RecipeBuilder setServings(String servings){
+        mCurrentRecipe.setServes(servings);
+        Timber.v("Servings set");
         return this;
     }
 
@@ -46,6 +54,7 @@ public class RecipeBuilder {
                 step.get(STEP_DESCRIPTION),
                 step.get(STEP_VIDEO_URL),
                 step.get(STEP_THUMBNAIL_URL));
+        Timber.v("Step added");
         return this;
     }
 
@@ -53,13 +62,14 @@ public class RecipeBuilder {
         mCurrentRecipe.addIngredient(ingredient.get(INGREDIENT_QUANTITY),
                 ingredient.get(INGREDIENT_MEASURE),
                 ingredient.get(INGREDIENT));
+        Timber.v("Ingredient Added");
         return this;
     }
 
     public void build() {
         if (!mBuilt) {
             sController.addRecipe(mCurrentRecipe);
-            Timber.d("Recipe built");
+            Timber.d("Recipe build finished");
         }
         mBuilt = true;
     }

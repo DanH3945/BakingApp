@@ -11,30 +11,25 @@ import java.util.Map;
 
 import timber.log.Timber;
 
-/**
- * Created by Dilbert on 5/17/2018.
- */
-
 public final class JsonUtils {
 
-    private static final String TAG = "JsonUtils";
-
     public static void populateRecipesFromJson(String jsonString){
-
-        RecipeBuilder builder = new RecipeBuilder();
-        Timber.d("populateRecipesFromJson: RecipeBuilder created");
 
         try {
             JSONArray baseArray = new JSONArray(jsonString);
             for(int recipeNum = 0; recipeNum < baseArray.length(); recipeNum++){
 
+                RecipeBuilder builder = new RecipeBuilder();
+                Timber.d("populateRecipesFromJson: RecipeBuilder created");
+
                 JSONObject recipeJsonObject = baseArray.getJSONObject(recipeNum);
                 String id = recipeJsonObject.getString("id");
                 String name = recipeJsonObject.getString("name");
+                String servings = recipeJsonObject.getString("servings");
 
-                Timber.d("populateRecipesFromJson: setting id and name for recipe #: " + Integer.toString(recipeNum));
+                Timber.v("populateRecipesFromJson: setting id, name and servings for recipe #: " + Integer.toString(recipeNum));
 
-                builder.setId(id).setTitle(name);
+                builder.setId(id).setTitle(name).setServings(servings);
 
                 JSONArray ingredientArray = recipeJsonObject.getJSONArray("ingredients");
 
@@ -47,7 +42,7 @@ public final class JsonUtils {
                     ingredient.put(RecipeBuilder.INGREDIENT, ingredientObject.getString(RecipeBuilder.INGREDIENT));
                     builder.addIngredient(ingredient);
 
-                    Timber.d("populateRecipesFromJson: attempting Recipe #: " + Integer.toString(recipeNum) + " & Ingredient #: " + Integer.toString(ingredientNum));
+                    Timber.v("populateRecipesFromJson: attempting Recipe #: " + Integer.toString(recipeNum) + " & Ingredient #: " + Integer.toString(ingredientNum));
                 }
 
                 JSONArray stepArray = recipeJsonObject.getJSONArray("steps");
@@ -64,12 +59,13 @@ public final class JsonUtils {
 
                     builder.addStep(step);
 
-                    Timber.d("populateRecipesFromJson: attempting Recipe #: " + Integer.toString(recipeNum) + " & Step #: " + Integer.toString(stepNum));
+                    Timber.v("populateRecipesFromJson: attempting Recipe #: " + Integer.toString(recipeNum) + " & Step #: " + Integer.toString(stepNum));
                 }
 
+                Timber.d("populateRecipesFromJson: Calling RecipeBuilder.build() for recipe #: " + recipeNum + " " + name);
+                builder.build();
+
             }
-            Timber.d("Calling RecipeBuilder.build()");
-            builder.build();
 
         } catch (JSONException e) {
             Timber.e("populateRecipesFromJson: Json Exception Caught");

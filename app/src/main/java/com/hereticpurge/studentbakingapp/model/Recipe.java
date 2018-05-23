@@ -6,6 +6,7 @@ public class Recipe {
 
     private String mRecipeId;
     private String mRecipeTitle;
+    private String mServings;
     private ArrayList<RecipeStep> mRecipeSteps;
     private ArrayList<RecipeIngredient> mRecipeIngredients;
 
@@ -42,6 +43,14 @@ public class Recipe {
 
     public void setRecipeTitle(String recipeTitle) {
         mRecipeTitle = recipeTitle;
+    }
+
+    public String getServings(){
+        return mServings;
+    }
+
+    public void setServes(String servings){
+        this.mServings = servings;
     }
 
     public ArrayList<RecipeStep> getRecipeSteps() {

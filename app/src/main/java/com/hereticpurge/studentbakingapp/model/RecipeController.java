@@ -1,9 +1,8 @@
 package com.hereticpurge.studentbakingapp.model;
 
-import android.util.Log;
-
 import java.util.ArrayList;
-import java.util.Map;
+
+import timber.log.Timber;
 
 public final class RecipeController {
 
@@ -15,7 +14,9 @@ public final class RecipeController {
     public static RecipeController getController(){
         if (sController == null){
             sController = new RecipeController();
+            Timber.v("getController: new Controller Created");
         }
+        Timber.v("getController: returning current controller");
         return sController;
     }
 
@@ -25,6 +26,7 @@ public final class RecipeController {
 
     public void addRecipe(Recipe recipe){
         sRecipeList.add(recipe);
+        Timber.d("addRecipe: Recipe added");
     }
 
 }

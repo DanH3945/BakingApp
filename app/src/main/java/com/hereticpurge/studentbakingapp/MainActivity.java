@@ -13,7 +13,6 @@ import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements VolleyResponseListener {
 
-    private static final String TAG = "MainActivity";
     private static final String VOLLEY_INITIAL_QUERY_TAG = "VolleyInitQuery";
 
 
