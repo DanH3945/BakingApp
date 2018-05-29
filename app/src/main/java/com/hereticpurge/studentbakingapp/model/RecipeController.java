@@ -26,7 +26,7 @@ public final class RecipeController {
 
     public void addRecipe(Recipe recipe){
         sRecipeList.add(recipe);
-        Timber.d("addRecipe: Recipe added");
+        Timber.d("addRecipe: Recipe added.  " + "Total list size is: " + sRecipeList.size());
     }
 
 }

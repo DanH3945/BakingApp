@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">Student Baking App</string>
 
+    // Error strings
     <string name="network_error">Network Error</string>
     <string name="volley_response_error">Volley Response Error</string>
+
+    // Strings for recycler view in recipe_list_fragment_layout using recipe_list_fragment_item
+    <string name="recycler_list_title">Recipe:</string>
+    <string name="recycler_list_servings">Serves:</string>
+    <string name="recycler_list_numIngredients">Total Ingredients:</string>
+    <string name="recycler_list_numSteps">Total Steps:</string>
+
 </resources>
