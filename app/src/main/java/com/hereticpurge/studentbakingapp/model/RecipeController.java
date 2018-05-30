@@ -6,7 +6,7 @@ import timber.log.Timber;
 
 public final class RecipeController {
 
-    private final ArrayList<Recipe> sRecipeList = new ArrayList<>();
+    private final ArrayList<Recipe> mRecipeList = new ArrayList<>();
     private static RecipeController sController;
 
     private RecipeController(){}
@@ -20,13 +20,17 @@ public final class RecipeController {
         return sController;
     }
 
+    public Recipe getFirst(){
+        return mRecipeList.get(0);
+    }
+
     public ArrayList<Recipe> getRecipeList(){
-        return sRecipeList;
+        return mRecipeList;
     }
 
     public void addRecipe(Recipe recipe){
-        sRecipeList.add(recipe);
-        Timber.d("addRecipe: Recipe added.  " + "Total list size is: " + sRecipeList.size());
+        mRecipeList.add(recipe);
+        Timber.d("addRecipe: Recipe added.  " + "Total list size is: " + mRecipeList.size());
     }
 
 }

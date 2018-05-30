@@ -16,7 +16,7 @@ public class RecipeListFragment extends Fragment {
         View root = inflater.inflate(R.layout.recipe_list_fragment_layout, container, false);
 
         RecyclerView recyclerView = root.findViewById(R.id.recipe_list_recyclerview);
-        RecipeListRecyclerAdapter recyclerAdapter = new RecipeListRecyclerAdapter();
+        RecipeListRecyclerAdapter recyclerAdapter = new RecipeListRecyclerAdapter((MainActivity) getActivity());
         recyclerView.setAdapter(recyclerAdapter);
 
         return root;

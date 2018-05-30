@@ -1,14 +1,17 @@
 package com.hereticpurge.studentbakingapp.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Recipe {
+public class Recipe implements Serializable {
 
     private String mRecipeId;
     private String mRecipeTitle;
     private String mServings;
     private ArrayList<RecipeStep> mRecipeSteps;
     private ArrayList<RecipeIngredient> mRecipeIngredients;
+
+    public static final String BUNDLE_ID = "bundledRecipe";
 
     public Recipe(){
         mRecipeSteps = new ArrayList<>();

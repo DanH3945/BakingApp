@@ -15,9 +15,11 @@ import java.util.ArrayList;
 public class RecipeListRecyclerAdapter extends RecyclerView.Adapter<RecipeListRecyclerAdapter.ViewHolder> {
 
     ArrayList<Recipe> mRecipeList;
+    MainActivity mMainActivity;
 
-    RecipeListRecyclerAdapter(){
+    RecipeListRecyclerAdapter(MainActivity mainActivity){
         mRecipeList = RecipeController.getController().getRecipeList();
+        mMainActivity = mainActivity;
     }
 
     @NonNull
@@ -29,12 +31,20 @@ public class RecipeListRecyclerAdapter extends RecyclerView.Adapter<RecipeListRe
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Recipe currentRecipe = mRecipeList.get(position);
+        final Recipe currentRecipe = mRecipeList.get(position);
 
         holder.titleTextView.setText(currentRecipe.getRecipeTitle());
         holder.servingsTextView.setText(currentRecipe.getServings());
         holder.ingredientNumTextView.setText(currentRecipe.getRecipeIngredients().size());
         holder.stepsNumTextView.setText(currentRecipe.getRecipeSteps().size());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMainActivity.showDetail(currentRecipe);
+            }
+        });
+
     }
 
     @Override
@@ -49,16 +59,8 @@ public class RecipeListRecyclerAdapter extends RecyclerView.Adapter<RecipeListRe
         final TextView ingredientNumTextView;
         final TextView stepsNumTextView;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(final View itemView) {
             super(itemView);
-
-            itemView.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    // IMPLEMENT ME TO SWITCH THE DETAIL FRAGMENT ON TABLETS AND DISPLAY IT ON
-                    // SMALLER DEVICES
-                }
-            });
 
             this.titleTextView = itemView.findViewById(R.id.recipe_list_item_title);
             this.servingsTextView = itemView.findViewById(R.id.recipe_list_item_servings);

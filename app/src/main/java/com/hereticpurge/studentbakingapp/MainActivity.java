@@ -1,13 +1,17 @@
 package com.hereticpurge.studentbakingapp;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.hereticpurge.studentbakingapp.model.Recipe;
+import com.hereticpurge.studentbakingapp.model.RecipeController;
 import com.hereticpurge.studentbakingapp.utilities.JsonUtils;
 import com.hereticpurge.studentbakingapp.utilities.NetworkUtils;
+
+import java.util.ArrayList;
 
 import timber.log.Timber;
 
@@ -15,6 +19,10 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
 
     private static final String VOLLEY_INITIAL_QUERY_TAG = "VolleyInitQuery";
 
+    private final boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+
+    private DetailFragment mDetailFragment;
+    private RecipeListFragment mRecipeListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
 
         setContentView(R.layout.activity_main);
 
+        mRecipeListFragment = new RecipeListFragment();
+        mDetailFragment = new DetailFragment();
+
         NetworkUtils.queryRecipeJson(VOLLEY_INITIAL_QUERY_TAG, this, this);
 
     }
@@ -41,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         switch (requestTag){
             case VOLLEY_INITIAL_QUERY_TAG:
                 JsonUtils.populateRecipesFromJson(jsonString);
+                initUI();
                 break;
 
             default:
@@ -54,5 +66,26 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
     public void onVolleyErrorResponse(VolleyError volleyError, String requestTag) {
         Toast.makeText(this, R.string.network_error, Toast.LENGTH_LONG).show();
         Timber.d("OnVolleyErrorResponse: Volley Network Error");
+    }
+
+    // WORK IN PROGRESS BELOW THIS LINE
+    // ------------------------------------------------------------------------
+    // WORK ON ME TOMORROW
+
+    public void initUI(){
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        if (isTablet){
+            transaction.replace(R.id.recipe_list_fragment_container, mRecipeListFragment);
+
+            showDetail(RecipeController.getController().getFirst());
+
+        } else {
+            transaction.replace(R.id.fragment_container, mRecipeListFragment);
+        }
+        transaction.commit();
+    }
+
+    public void showDetail(Recipe recipe){
+
     }
 }

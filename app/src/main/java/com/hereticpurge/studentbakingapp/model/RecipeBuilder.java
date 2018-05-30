@@ -20,9 +20,10 @@ public class RecipeBuilder {
     //the recipe being built
     private final Recipe mCurrentRecipe;
 
-    //boolean to determine if this recipe has already been built and therefore shouldn't
-    // be changed.
+    // boolean to determine if this instance of the builder has already been built and therefore
+    // shouldn't be buildable again.
     private boolean mBuilt = false;
+
     private final RecipeController sController;
 
     public RecipeBuilder(){
