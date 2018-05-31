@@ -1,5 +1,7 @@
 package com.hereticpurge.studentbakingapp.model;
 
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 
 import timber.log.Timber;
@@ -20,8 +22,13 @@ public final class RecipeController {
         return sController;
     }
 
+    @Nullable
     public Recipe getFirst(){
-        return mRecipeList.get(0);
+        if (mRecipeList.size() > 0){
+            return mRecipeList.get(0);
+        } else {
+            return null;
+        }
     }
 
     public ArrayList<Recipe> getRecipeList(){

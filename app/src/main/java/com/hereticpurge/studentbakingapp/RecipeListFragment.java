@@ -3,6 +3,7 @@ package com.hereticpurge.studentbakingapp;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ public class RecipeListFragment extends Fragment {
         RecyclerView recyclerView = root.findViewById(R.id.recipe_list_recyclerview);
         RecipeListRecyclerAdapter recyclerAdapter = new RecipeListRecyclerAdapter((MainActivity) getActivity());
         recyclerView.setAdapter(recyclerAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
 
         return root;
     }

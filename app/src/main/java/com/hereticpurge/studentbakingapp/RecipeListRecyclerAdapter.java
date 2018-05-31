@@ -35,13 +35,13 @@ public class RecipeListRecyclerAdapter extends RecyclerView.Adapter<RecipeListRe
 
         holder.titleTextView.setText(currentRecipe.getRecipeTitle());
         holder.servingsTextView.setText(currentRecipe.getServings());
-        holder.ingredientNumTextView.setText(currentRecipe.getRecipeIngredients().size());
-        holder.stepsNumTextView.setText(currentRecipe.getRecipeSteps().size());
+        holder.ingredientNumTextView.setText(Integer.toString(currentRecipe.getRecipeIngredients().size()));
+        holder.stepsNumTextView.setText(Integer.toString(currentRecipe.getRecipeSteps().size()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMainActivity.showDetail(currentRecipe);
+                mMainActivity.recipeSelected(currentRecipe);
             }
         });
 

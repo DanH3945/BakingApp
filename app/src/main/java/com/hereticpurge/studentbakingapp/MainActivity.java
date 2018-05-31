@@ -11,15 +11,13 @@ import com.hereticpurge.studentbakingapp.model.RecipeController;
 import com.hereticpurge.studentbakingapp.utilities.JsonUtils;
 import com.hereticpurge.studentbakingapp.utilities.NetworkUtils;
 
-import java.util.ArrayList;
-
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements VolleyResponseListener {
 
     private static final String VOLLEY_INITIAL_QUERY_TAG = "VolleyInitQuery";
 
-    private final boolean isTablet = getResources().getBoolean(R.bool.isTablet);
+    private boolean isTablet;
 
     private DetailFragment mDetailFragment;
     private RecipeListFragment mRecipeListFragment;
@@ -27,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        isTablet = getResources().getBoolean(R.bool.isTablet);
 
         if (BuildConfig.DEBUG) {
             // debug tree logging
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
     @Override
     public void onVolleyResponse(String jsonString, String requestTag) {
 
-        // switch statement to handle incoming responses incase more need to be added later.
+        // switch statement to handle incoming responses in case more need to be added later.
         switch (requestTag){
             case VOLLEY_INITIAL_QUERY_TAG:
                 JsonUtils.populateRecipesFromJson(jsonString);
@@ -68,24 +68,29 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         Timber.d("OnVolleyErrorResponse: Volley Network Error");
     }
 
-    // WORK IN PROGRESS BELOW THIS LINE
-    // ------------------------------------------------------------------------
-    // WORK ON ME TOMORROW
-
     public void initUI(){
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        if (isTablet){
-            transaction.replace(R.id.recipe_list_fragment_container, mRecipeListFragment);
-
-            showDetail(RecipeController.getController().getFirst());
-
-        } else {
-            transaction.replace(R.id.fragment_container, mRecipeListFragment);
-        }
+        transaction.replace(R.id.main_fragment_container, mRecipeListFragment);
         transaction.commit();
+
+        if (isTablet){
+            FragmentTransaction detailTransaction = getFragmentManager().beginTransaction();
+            detailTransaction.replace(R.id.recipe_detail_fragment_container, mDetailFragment);
+            detailTransaction.commit();
+
+            Recipe recipe = RecipeController.getController().getFirst();
+            if (recipe != null){
+                recipeSelected(recipe);
+            }
+        }
     }
 
-    public void showDetail(Recipe recipe){
-
+    public void recipeSelected(Recipe recipe){
+        if (!isTablet){
+            FragmentTransaction switchDetailTransaction = getFragmentManager().beginTransaction();
+            switchDetailTransaction.replace(R.id.main_fragment_container, mDetailFragment);
+            switchDetailTransaction.commit();
+        }
+        mDetailFragment.displayRecipe(recipe);
     }
 }
