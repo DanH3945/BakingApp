@@ -9,10 +9,14 @@ import android.view.ViewGroup;
 
 import com.hereticpurge.studentbakingapp.model.Recipe;
 
+import java.util.ArrayList;
+
 public class DetailFragment extends Fragment{
 
-    Recipe mRecipe;
+    private Recipe mRecipe;
 
+    private int mStepIndex;
+    private int START_INDEX = -1;
 
     @Nullable
     @Override
@@ -25,7 +29,26 @@ public class DetailFragment extends Fragment{
 
     public void displayRecipe(Recipe recipe){
         mRecipe = recipe;
+        mStepIndex = START_INDEX;
+        nextStep();
     }
 
+    private void nextStep(){
+        if (mStepIndex < (mRecipe.getRecipeSteps().size() - 1)){
+            showStep(mRecipe.getRecipeSteps().get(++mStepIndex));
+        }
+    }
+
+    private void previousStep(){
+        if (mStepIndex > 0){
+            showStep(mRecipe.getRecipeSteps().get(--mStepIndex));
+        }
+    }
+
+    private void showStep(Recipe.RecipeStep recipeStep){
+        if (recipeStep.getVideoUrl() != ""){
+
+        }
+    }
 
 }
