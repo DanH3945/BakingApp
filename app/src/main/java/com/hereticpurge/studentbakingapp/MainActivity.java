@@ -89,8 +89,24 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         if (!isTablet){
             FragmentTransaction switchDetailTransaction = getFragmentManager().beginTransaction();
             switchDetailTransaction.replace(R.id.main_fragment_container, mDetailFragment);
+            switchDetailTransaction.addToBackStack(null);
             switchDetailTransaction.commit();
         }
         mDetailFragment.displayRecipe(recipe);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() != 0){
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        RecipeController.getController().clear();
+        super.onDestroy();
     }
 }

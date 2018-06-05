@@ -40,4 +40,8 @@ public final class RecipeController {
         Timber.d("addRecipe: Recipe added.  " + "Total list size is: " + mRecipeList.size());
     }
 
+    public void clear(){
+        mRecipeList.clear();
+    }
+
 }

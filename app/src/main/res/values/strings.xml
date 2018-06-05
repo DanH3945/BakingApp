@@ -11,4 +11,7 @@
     <string name="recycler_list_numIngredients">Total Ingredients:</string>
     <string name="recycler_list_numSteps">Total Steps:</string>
 
+    // Strings for the detail ingredient list items
+
+
 </resources>

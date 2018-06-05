@@ -19,8 +19,8 @@ public final class NetworkUtils {
 
     // Overloaded the method to accept both outside url input as well as the default url from above.  Not used now but for future proofing.
     public static void queryRecipeJson(String requestTag, Context context, VolleyResponseListener volleyResponseListener){
-        queryRecipeJson(RECIPE_URL, requestTag, context, volleyResponseListener);
         Timber.i("Query started without URL.  Using Default");
+        queryRecipeJson(RECIPE_URL, requestTag, context, volleyResponseListener);
     }
 
     public static void queryRecipeJson(String url, final String requestTag, Context context, final VolleyResponseListener volleyResponseListener) {

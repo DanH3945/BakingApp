@@ -16,21 +16,25 @@ public class DetailFragment extends Fragment{
 
     private Recipe mRecipe;
 
+    private View view;
+
     private int mStepIndex;
     private int START_INDEX = -1;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.recipe_detail_fragment_layout, container, false);
-        root.setOnTouchListener(new SimpleSwipeListener());
-        return root;
+
+        view = inflater.inflate(R.layout.recipe_detail_fragment_layout, container, false);
+
+        view.setOnTouchListener(new SimpleSwipeListener());
+
+        return view;
     }
 
     public void displayRecipe(Recipe recipe){
         mRecipe = recipe;
         mStepIndex = START_INDEX;
-        displayIngredients();
         nextStep();
     }
 
@@ -49,10 +53,6 @@ public class DetailFragment extends Fragment{
     }
 
     private void showStep(Recipe.RecipeStep recipeStep){
-
-    }
-
-    private void displayIngredients(){
 
     }
 
