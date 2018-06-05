@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
 
     private DetailFragment mDetailFragment;
     private RecipeListFragment mRecipeListFragment;
+    private RecipeController mController = RecipeController.getController();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,21 +79,20 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
             detailTransaction.replace(R.id.recipe_detail_fragment_container, mDetailFragment);
             detailTransaction.commit();
 
-            Recipe recipe = RecipeController.getController().getFirst();
-            if (recipe != null){
-                recipeSelected(recipe);
+            if (mController.getSelected() != null){
+                recipeSelected();
             }
         }
     }
 
-    public void recipeSelected(Recipe recipe){
+    public void recipeSelected(){
         if (!isTablet){
             FragmentTransaction switchDetailTransaction = getFragmentManager().beginTransaction();
             switchDetailTransaction.replace(R.id.main_fragment_container, mDetailFragment);
             switchDetailTransaction.addToBackStack(null);
             switchDetailTransaction.commit();
         }
-        mDetailFragment.displayRecipe(recipe);
+        mDetailFragment.displayRecipe();
     }
 
     @Override

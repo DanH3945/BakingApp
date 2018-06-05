@@ -1,6 +1,7 @@
 package com.hereticpurge.studentbakingapp;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hereticpurge.studentbakingapp.model.Recipe;
+import com.hereticpurge.studentbakingapp.model.RecipeController;
 
 import timber.log.Timber;
 
@@ -16,37 +18,46 @@ public class DetailFragment extends Fragment{
 
     private Recipe mRecipe;
 
-    private View view;
-
     private int mStepIndex;
     private int START_INDEX = -1;
+
+    private RecipeController mController = RecipeController.getController();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.recipe_detail_fragment_layout, container, false);
+        View view = inflater.inflate(R.layout.recipe_detail_fragment_layout, container, false);
 
         view.setOnTouchListener(new SimpleSwipeListener());
 
         return view;
     }
 
-    public void displayRecipe(Recipe recipe){
-        mRecipe = recipe;
-        mStepIndex = START_INDEX;
-        nextStep();
+    @Override
+    public void onAttach(Context context) {
+
+        super.onAttach(context);
+    }
+
+    public void displayRecipe(){
+        if (mController.getSelected() != null) {
+            mRecipe = mController.getSelected();
+            Timber.d("Loaded Recipe: " + mRecipe.getRecipeTitle());
+            mStepIndex = START_INDEX;
+            nextStep();
+        }
     }
 
     private void nextStep(){
-        if (mStepIndex < (mRecipe.getRecipeSteps().size() - 1)){
+        if (mRecipe != null && mStepIndex < (mRecipe.getRecipeSteps().size() - 1)){
             showStep(mRecipe.getRecipeSteps().get(++mStepIndex));
             Timber.d("Now Showing Step #: " + mStepIndex);
         }
     }
 
     private void previousStep(){
-        if (mStepIndex > 0){
+        if (mRecipe != null && mStepIndex > 0){
             showStep(mRecipe.getRecipeSteps().get(--mStepIndex));
             Timber.d("Now Showing Step #: " + mStepIndex);
         }
@@ -75,7 +86,6 @@ public class DetailFragment extends Fragment{
                     yStart = event.getY();
                     Timber.d("X POSITION: " + Float.toString(xStart));
                     Timber.d("Y POSITION: " + Float.toString(yStart));
-                    Timber.d("----------  MOTION EVENT BREAK  ----------");
                     break;
 
                 case MotionEvent.ACTION_UP:
@@ -94,6 +104,7 @@ public class DetailFragment extends Fragment{
                             nextStep();
                         }
                     }
+                    Timber.d("----------  MOTION EVENT BREAK  ----------");
                     break;
             }
             return true;

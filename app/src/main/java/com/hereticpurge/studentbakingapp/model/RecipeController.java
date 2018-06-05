@@ -10,6 +10,7 @@ public final class RecipeController {
 
     private final ArrayList<Recipe> mRecipeList = new ArrayList<>();
     private static RecipeController sController;
+    private int mSelectedIndex = 0;
 
     private RecipeController(){}
 
@@ -20,15 +21,6 @@ public final class RecipeController {
         }
         Timber.v("getController: returning current controller");
         return sController;
-    }
-
-    @Nullable
-    public Recipe getFirst(){
-        if (mRecipeList.size() > 0){
-            return mRecipeList.get(0);
-        } else {
-            return null;
-        }
     }
 
     public ArrayList<Recipe> getRecipeList(){
@@ -42,6 +34,14 @@ public final class RecipeController {
 
     public void clear(){
         mRecipeList.clear();
+    }
+
+    public void setSelectedIndex(int index){
+        mSelectedIndex = index;
+    }
+
+    public Recipe getSelected(){
+        return mRecipeList.get(mSelectedIndex);
     }
 
 }
