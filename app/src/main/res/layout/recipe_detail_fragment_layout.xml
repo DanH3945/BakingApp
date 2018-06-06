@@ -1,21 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:layout_anchorGravity="center"
+    android:padding="15dp">
 
-    <FrameLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/detail_media_container">
+        android:id="@+id/detail_text_short_description"
+        tools:text="Short Description"
+        android:gravity="center"/>
 
-    </FrameLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/detail_text_long_description"
+        tools:text="Long Description"
+        android:minHeight="80dp"/>
 
-    <ListView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/detail_ingredient_list_view">
+        android:paddingTop="20dp"
+        android:id="@+id/detail_image_view"
+        android:src="@mipmap/ic_launcher"
+        android:layout_gravity="center"/>
 
-    </ListView>
-
-</FrameLayout>
+</LinearLayout>

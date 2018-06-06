@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         transaction.commit();
 
         if (isTablet){
+            Timber.d("Tablet detected.  Loading tablet layout.");
             FragmentTransaction detailTransaction = getFragmentManager().beginTransaction();
             detailTransaction.replace(R.id.recipe_detail_fragment_container, mDetailFragment);
             detailTransaction.commit();
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
             switchDetailTransaction.addToBackStack(null);
             switchDetailTransaction.commit();
         }
+        getFragmentManager().executePendingTransactions();
         mDetailFragment.displayRecipe();
     }
 
