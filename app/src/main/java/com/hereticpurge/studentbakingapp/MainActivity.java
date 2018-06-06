@@ -1,5 +1,6 @@
 package com.hereticpurge.studentbakingapp;
 
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
 
             default:
                 Toast.makeText(this, R.string.volley_response_error, Toast.LENGTH_LONG).show();
-                Timber.w("OnVolleyResponse: Volley Response Switch Failure");
+                Timber.d("OnVolleyResponse: Volley Response Switch Failure");
         }
 
     }
@@ -106,7 +107,8 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
 
     @Override
     protected void onDestroy() {
-        RecipeController.getController().clear();
+        mController.clear();
         super.onDestroy();
     }
+
 }

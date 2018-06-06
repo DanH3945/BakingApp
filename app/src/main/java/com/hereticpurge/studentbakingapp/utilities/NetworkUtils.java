@@ -19,12 +19,12 @@ public final class NetworkUtils {
 
     // Overloaded the method to accept both outside url input as well as the default url from above.  Not used now but for future proofing.
     public static void queryRecipeJson(String requestTag, Context context, VolleyResponseListener volleyResponseListener){
-        Timber.i("Query started without URL.  Using Default");
+        Timber.d("Query started without URL.  Using Default");
         queryRecipeJson(RECIPE_URL, requestTag, context, volleyResponseListener);
     }
 
     public static void queryRecipeJson(String url, final String requestTag, Context context, final VolleyResponseListener volleyResponseListener) {
-        Timber.i("Query started with URL");
+        Timber.d("Query started with URL");
         RequestQueue queue = Volley.newRequestQueue(context);
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
