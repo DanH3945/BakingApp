@@ -6,7 +6,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     app:layout_anchorGravity="center"
-    android:padding="15dp">
+    android:background="@color/colorPrimaryDark">
+
+    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:id="@+id/detail_player_view"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:id="@+id/detail_image_view"
+        android:src="@mipmap/ic_launcher"
+        android:layout_gravity="center"
+        android:scaleType="fitXY"
+        android:visibility="gone"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -14,7 +30,8 @@
         android:id="@+id/detail_text_short_description"
         tools:text="Short Description"
         android:gravity="center"
-        android:textSize="25sp"/>
+        android:textSize="25sp"
+        android:paddingTop="40dp"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -23,23 +40,7 @@
         tools:text="Long Description"
         android:paddingTop="15dp"
         android:minHeight="80dp"
-        android:textSize="15sp"/>
-
-    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/detail_player_view"
-        android:layout_gravity="center"
-        android:visibility="gone"/>
-
-    <ImageView
-        android:layout_width="380dp"
-        android:layout_height="370dp"
-        android:paddingTop="80dp"
-        android:id="@+id/detail_image_view"
-        android:src="@mipmap/ic_launcher"
-        android:layout_gravity="center"
-        android:scaleType="fitXY"
-        android:visibility="gone"/>
+        android:textSize="15sp"
+        android:paddingLeft="15dp"/>
 
 </LinearLayout>

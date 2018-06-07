@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -18,6 +19,7 @@ import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -115,6 +117,10 @@ public class DetailFragment extends Fragment {
             loadMedia(thumbUrl, fileExtension);
 
             Timber.d("Thumbnail Url Extension is: " + fileExtension);
+        } else {
+            mImageView.setImageResource(R.mipmap.cupcake);
+            mExoPlayerView.setVisibility(View.GONE);
+            mImageView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -126,6 +132,7 @@ public class DetailFragment extends Fragment {
 
             case ".mp4":
                 Timber.d(".mp4 Detected");
+                mExoPlayerView.setVisibility(View.VISIBLE);
                 initExoPlayer(url);
                 break;
 
@@ -135,6 +142,7 @@ public class DetailFragment extends Fragment {
             case ".jpg":
                 Timber.d("Image detected");
                 Picasso.with(getActivity().getApplicationContext()).load(url).into(mImageView);
+                mExoPlayerView.setVisibility(View.GONE);
                 mImageView.setVisibility(View.VISIBLE);
                 break;
 
@@ -145,8 +153,6 @@ public class DetailFragment extends Fragment {
     }
 
     public void initExoPlayer(String url){
-
-        mExoPlayerView.setVisibility(View.VISIBLE);
 
         mExoPlayer = ExoPlayerFactory.newSimpleInstance(
                 getActivity().getApplicationContext(),
@@ -161,7 +167,8 @@ public class DetailFragment extends Fragment {
                 new DefaultExtractorsFactory(),
                 null,
                 null);
-
+        mExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+        mExoPlayer.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT);
         mExoPlayer.prepare(mediaSource);
         mExoPlayer.setPlayWhenReady(true);
     }
@@ -171,7 +178,7 @@ public class DetailFragment extends Fragment {
         mLongDesc.setText("");
         mImageView.setVisibility(View.GONE);
 
-        mExoPlayerView.setVisibility(View.GONE);
+        mExoPlayerView.setVisibility(View.INVISIBLE);
         if (mExoPlayer != null) {
             mExoPlayer.stop();
             mExoPlayer.release();
