@@ -100,7 +100,9 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
 
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() != 0){
+        Timber.d("Back pressed");
+        if (getFragmentManager().getBackStackEntryCount() > 0 && mDetailFragment.onBack()){
+            Timber.d("popping backstack");
             getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();

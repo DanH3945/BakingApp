@@ -1,6 +1,7 @@
 package com.hereticpurge.studentbakingapp;
 
 import android.app.Fragment;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -8,9 +9,18 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.hereticpurge.studentbakingapp.model.Recipe;
 import com.hereticpurge.studentbakingapp.model.RecipeController;
 import com.squareup.picasso.Picasso;
@@ -29,6 +39,8 @@ public class DetailFragment extends Fragment {
     private TextView mShortDesc;
     private TextView mLongDesc;
     private ImageView mImageView;
+    private SimpleExoPlayerView mExoPlayerView;
+    private SimpleExoPlayer mExoPlayer;
 
     @Nullable
     @Override
@@ -47,6 +59,7 @@ public class DetailFragment extends Fragment {
         mShortDesc = view.findViewById(R.id.detail_text_short_description);
         mLongDesc = view.findViewById(R.id.detail_text_long_description);
         mImageView = view.findViewById(R.id.detail_image_view);
+        mExoPlayerView = view.findViewById(R.id.detail_player_view);
 
         super.onViewCreated(view, savedInstanceState);
     }
@@ -113,7 +126,7 @@ public class DetailFragment extends Fragment {
 
             case ".mp4":
                 Timber.d(".mp4 Detected");
-                // Load exo player here
+                initExoPlayer(url);
                 break;
 
             case ".bmp":
@@ -131,10 +144,39 @@ public class DetailFragment extends Fragment {
         }
     }
 
+    public void initExoPlayer(String url){
+
+        mExoPlayerView.setVisibility(View.VISIBLE);
+
+        mExoPlayer = ExoPlayerFactory.newSimpleInstance(
+                getActivity().getApplicationContext(),
+                new DefaultTrackSelector(),
+                new DefaultLoadControl());
+        mExoPlayerView.setPlayer(mExoPlayer);
+
+        Uri uri = Uri.parse(url);
+        String userAgent = Util.getUserAgent(getActivity().getApplicationContext(), "StudentBakingApp");
+        MediaSource mediaSource = new ExtractorMediaSource(uri,
+                new DefaultDataSourceFactory(getActivity().getApplicationContext(), userAgent),
+                new DefaultExtractorsFactory(),
+                null,
+                null);
+
+        mExoPlayer.prepare(mediaSource);
+        mExoPlayer.setPlayWhenReady(true);
+    }
+
     private void clearViews() {
         mShortDesc.setText("");
         mLongDesc.setText("");
         mImageView.setVisibility(View.GONE);
+
+        mExoPlayerView.setVisibility(View.GONE);
+        if (mExoPlayer != null) {
+            mExoPlayer.stop();
+            mExoPlayer.release();
+            mExoPlayer = null;
+        }
     }
 
     class SimpleSwipeListener implements View.OnTouchListener {
@@ -178,6 +220,18 @@ public class DetailFragment extends Fragment {
                     break;
             }
             return true;
+        }
+    }
+
+    public boolean onBack(){
+        if (mStepIndex < 1){
+            clearViews();
+            Timber.d("Ready to exit DetailFragment");
+            return true;
+        } else {
+            previousStep();
+            Timber.d("Not ready to exit DetailFragment");
+            return false;
         }
     }
 }
