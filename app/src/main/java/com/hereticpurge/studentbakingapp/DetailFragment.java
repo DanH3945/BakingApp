@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.hereticpurge.studentbakingapp.model.Recipe;
@@ -16,7 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import timber.log.Timber;
 
-public class DetailFragment extends Fragment{
+public class DetailFragment extends Fragment {
 
     private Recipe mRecipe;
 
@@ -50,7 +51,7 @@ public class DetailFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public void displayRecipe(){
+    public void displayRecipe() {
         Timber.d("displayRecipe Called");
         if (mController.getSelected() != null) {
             mRecipe = mController.getSelected();
@@ -60,54 +61,83 @@ public class DetailFragment extends Fragment{
         }
     }
 
-    private void nextStep(){
-        if (mRecipe != null && mStepIndex < (mRecipe.getRecipeSteps().size() - 1)){
+    private void nextStep() {
+        if (mRecipe != null && mStepIndex < (mRecipe.getRecipeSteps().size() - 1)) {
             showStep(mRecipe.getRecipeSteps().get(++mStepIndex));
             Timber.d("Now Showing Step #: " + mStepIndex);
         }
     }
 
-    private void previousStep(){
-        if (mRecipe != null && mStepIndex > 0){
+    private void previousStep() {
+        if (mRecipe != null && mStepIndex > 0) {
             showStep(mRecipe.getRecipeSteps().get(--mStepIndex));
             Timber.d("Now Showing Step #: " + mStepIndex);
         }
     }
 
-    private void showStep(Recipe.RecipeStep recipeStep){
+    private void showStep(Recipe.RecipeStep recipeStep) {
         clearViews();
 
         mShortDesc.setText(recipeStep.getShortDescription());
 
-        if (mStepIndex != 0){
+        if (!mShortDesc.getText().equals(recipeStep.getDescription())) {
             mLongDesc.setText(recipeStep.getDescription());
         }
 
         Timber.d("Recipe video URL" + recipeStep.getVideoUrl());
         Timber.d("Recipe thumbnail URL" + recipeStep.getThumbnailUrl());
-        if (!recipeStep.getVideoUrl().equals("")){
-            Timber.d("Video URL detected correctly");
-            // implement exo player details here
 
-        } else if (!recipeStep.getThumbnailUrl().equals("")){
-            Timber.d("Thumbnail URL detected correctly");
-            // Picasso should handle the loading here.  If the image fails to be retrieved it
-            // should just leave the canvas blank and not be noticed by users.
-            Picasso.with(getActivity().getApplicationContext()).load(recipeStep.getThumbnailUrl()).into(mImageView);
-            mImageView.setVisibility(View.VISIBLE);
-        } else {
+        String vidUrl = recipeStep.getVideoUrl();
+        String thumbUrl = recipeStep.getThumbnailUrl();
+
+        String fileExtension;
+
+        if (!vidUrl.equals("")) {
+            fileExtension = vidUrl.substring(vidUrl.lastIndexOf("."), vidUrl.length());
+            loadMedia(vidUrl, fileExtension);
+
+            Timber.d("Video Url Extension is: " + fileExtension);
+        } else if (!thumbUrl.equals("")) {
+            fileExtension = thumbUrl.substring(thumbUrl.lastIndexOf("."), thumbUrl.length());
+            loadMedia(thumbUrl, fileExtension);
+
+            Timber.d("Thumbnail Url Extension is: " + fileExtension);
+        }
+    }
+
+    private void loadMedia(String url, String fileExtension) {
+
+        switch (fileExtension) {
+            case "":
+                break;
+
+            case ".mp4":
+                Timber.d(".mp4 Detected");
+                // Load exo player here
+                break;
+
+            case ".bmp":
+            case ".png":
+            case ".gif":
+            case ".jpg":
+                Timber.d("Image detected");
+                Picasso.with(getActivity().getApplicationContext()).load(url).into(mImageView);
+                mImageView.setVisibility(View.VISIBLE);
+                break;
+
+            default:
+                break;
 
         }
-
     }
 
-    private void clearViews(){
+    private void clearViews() {
         mShortDesc.setText("");
         mLongDesc.setText("");
-        mImageView.setVisibility(View.INVISIBLE);
+        mImageView.setVisibility(View.GONE);
     }
 
-    class SimpleSwipeListener implements View.OnTouchListener{
+    class SimpleSwipeListener implements View.OnTouchListener {
 
         private float xStart = 0;
         private float xStop = 0;
@@ -120,7 +150,7 @@ public class DetailFragment extends Fragment{
         @Override
         public boolean onTouch(View v, MotionEvent event) {
 
-            switch (event.getAction()){
+            switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     xStart = event.getX();
                     yStart = event.getY();
@@ -135,8 +165,8 @@ public class DetailFragment extends Fragment{
                     float xTrans = Math.abs(xStop - xStart);
                     float yTrans = Math.abs(yStop - yStart);
 
-                    if (xTrans > SWIPE_X_MIN_DISTANCE && yTrans < SWIPE_Y_MAX_DISTANCE){
-                        if (xStart > xStop){
+                    if (xTrans > SWIPE_X_MIN_DISTANCE && yTrans < SWIPE_Y_MAX_DISTANCE) {
+                        if (xStart > xStop) {
                             Timber.d("Swipe from right to left");
                             nextStep();
                         } else {
