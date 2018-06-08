@@ -217,6 +217,36 @@ public class DetailFragment extends Fragment {
         }
     }
 
+    public boolean onBack(){
+        if (mStepIndex < 1){
+            clearViews();
+            Timber.d("Ready to exit DetailFragment");
+            return true;
+        } else {
+            previousStep();
+            Timber.d("Not ready to exit DetailFragment");
+            return false;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        if (mExoPlayer != null){
+            mPlayPosition = mExoPlayer.getCurrentPosition();
+            mExoPlayer.setPlayWhenReady(false);
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mExoPlayer != null){
+            mExoPlayer.seekTo(mPlayPosition);
+            mExoPlayer.setPlayWhenReady(true);
+        }
+    }
+
     class SimpleSwipeListener implements View.OnTouchListener {
 
         private float xStart = 0;
@@ -258,36 +288,6 @@ public class DetailFragment extends Fragment {
                     break;
             }
             return true;
-        }
-    }
-
-    public boolean onBack(){
-        if (mStepIndex < 1){
-            clearViews();
-            Timber.d("Ready to exit DetailFragment");
-            return true;
-        } else {
-            previousStep();
-            Timber.d("Not ready to exit DetailFragment");
-            return false;
-        }
-    }
-
-    @Override
-    public void onPause() {
-        if (mExoPlayer != null){
-            mPlayPosition = mExoPlayer.getCurrentPosition();
-            mExoPlayer.setPlayWhenReady(false);
-        }
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mExoPlayer != null){
-            mExoPlayer.seekTo(mPlayPosition);
-            mExoPlayer.setPlayWhenReady(true);
         }
     }
 }
