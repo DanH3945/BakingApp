@@ -1,13 +1,11 @@
 package com.hereticpurge.studentbakingapp;
 
-import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.hereticpurge.studentbakingapp.model.Recipe;
 import com.hereticpurge.studentbakingapp.model.RecipeController;
 import com.hereticpurge.studentbakingapp.utilities.JsonUtils;
 import com.hereticpurge.studentbakingapp.utilities.NetworkUtils;

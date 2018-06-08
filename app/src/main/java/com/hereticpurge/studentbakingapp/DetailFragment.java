@@ -13,14 +13,14 @@ import android.widget.TextView;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.hereticpurge.studentbakingapp.model.Recipe;
@@ -41,8 +41,13 @@ public class DetailFragment extends Fragment {
     private TextView mShortDesc;
     private TextView mLongDesc;
     private ImageView mImageView;
-    private SimpleExoPlayerView mExoPlayerView;
+
+    // PlayerView is the new preferred way to implement an ExoPlayer view.  The old way uses
+    // SimpleExoPlayerView which is now deprecated.
+    private PlayerView mExoPlayerView;
     private SimpleExoPlayer mExoPlayer;
+
+    private long mPlayPosition;
 
     @Nullable
     @Override
@@ -132,6 +137,7 @@ public class DetailFragment extends Fragment {
 
             case ".mp4":
                 Timber.d(".mp4 Detected");
+                mImageView.setVisibility(View.GONE);
                 mExoPlayerView.setVisibility(View.VISIBLE);
                 initExoPlayer(url);
                 break;
@@ -154,19 +160,44 @@ public class DetailFragment extends Fragment {
 
     public void initExoPlayer(String url){
 
+        // This is the old implementation suggested in the class.  This implementation is now
+        // deprecated in favor of the method below the comment.
+        /*
         mExoPlayer = ExoPlayerFactory.newSimpleInstance(
                 getActivity().getApplicationContext(),
                 new DefaultTrackSelector(),
                 new DefaultLoadControl());
+        */
+
+        // Continuing with the new suggested implementation
+        mExoPlayer = ExoPlayerFactory.newSimpleInstance(
+                new DefaultRenderersFactory(getActivity().getApplicationContext()),
+                new DefaultTrackSelector(),
+                new DefaultLoadControl());
+
         mExoPlayerView.setPlayer(mExoPlayer);
 
         Uri uri = Uri.parse(url);
         String userAgent = Util.getUserAgent(getActivity().getApplicationContext(), "StudentBakingApp");
+
+        // This is another implementation suggested by the classes.  However this style is deprecated in favor
+        // of the below Factory implementation
+
+        /*
         MediaSource mediaSource = new ExtractorMediaSource(uri,
                 new DefaultDataSourceFactory(getActivity().getApplicationContext(), userAgent),
                 new DefaultExtractorsFactory(),
                 null,
                 null);
+        */
+
+        // New correct way to implement ExoPlayer
+        ExtractorMediaSource.Factory mediaFactory = new ExtractorMediaSource.Factory(new DefaultDataSourceFactory(
+                getActivity().getApplicationContext(),
+                userAgent
+        ));
+        MediaSource mediaSource = mediaFactory.createMediaSource(uri);
+        // Continue normal implementation of the ExoPlayer unchanged from class suggestions.
         mExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
         mExoPlayer.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT);
         mExoPlayer.prepare(mediaSource);
@@ -239,6 +270,24 @@ public class DetailFragment extends Fragment {
             previousStep();
             Timber.d("Not ready to exit DetailFragment");
             return false;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        if (mExoPlayer != null){
+            mPlayPosition = mExoPlayer.getCurrentPosition();
+            mExoPlayer.setPlayWhenReady(false);
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mExoPlayer != null){
+            mExoPlayer.seekTo(mPlayPosition);
+            mExoPlayer.setPlayWhenReady(true);
         }
     }
 }
