@@ -11,8 +11,6 @@ public class Recipe implements Serializable {
     private ArrayList<RecipeStep> mRecipeSteps;
     private ArrayList<RecipeIngredient> mRecipeIngredients;
 
-    public static final String BUNDLE_ID = "bundledRecipe";
-
     public Recipe(){
         mRecipeSteps = new ArrayList<>();
         mRecipeIngredients = new ArrayList<>();
