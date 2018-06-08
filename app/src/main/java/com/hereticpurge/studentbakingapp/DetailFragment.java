@@ -1,6 +1,7 @@
 package com.hereticpurge.studentbakingapp;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,9 +28,15 @@ import com.hereticpurge.studentbakingapp.model.Recipe;
 import com.hereticpurge.studentbakingapp.model.RecipeController;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import timber.log.Timber;
 
 public class DetailFragment extends Fragment {
+
+    public static String INGREDIENT_INTENT = "com.hereticpurge.studentbakingapp.INGREDIENT_INTENT";
+    public static String INGREDIENT_ARRAY = "ingredientArray";
 
     private Recipe mRecipe;
 
@@ -100,8 +107,13 @@ public class DetailFragment extends Fragment {
 
         mShortDesc.setText(recipeStep.getShortDescription());
 
-        if (!mShortDesc.getText().equals(recipeStep.getDescription())) {
+        // If this is the first step display the ingredient list in the long description area.
+        // otherwise display the description for the specific step.
+        if (mStepIndex > 0) {
             mLongDesc.setText(recipeStep.getDescription());
+        } else {
+            mShortDesc.setText(mRecipe.getRecipeTitle());
+            mLongDesc.setText(getFormattedIngredientList());
         }
 
         Timber.d("Recipe video URL" + recipeStep.getVideoUrl());
@@ -156,6 +168,38 @@ public class DetailFragment extends Fragment {
                 break;
 
         }
+    }
+
+    public void sendIngredientsToWidget(){
+        Intent intent = new Intent();
+        intent.setAction(INGREDIENT_INTENT);
+        intent.putExtra(INGREDIENT_ARRAY, mRecipe.getRecipeIngredients());
+        getActivity().sendBroadcast(intent);
+    }
+
+    private String getFormattedIngredientList(){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Ingredients: ");
+        stringBuilder.append(System.getProperty("line.separator"));
+        stringBuilder.append(System.getProperty("line.separator"));
+
+        ArrayList<Recipe.RecipeIngredient> ingredientArray = mRecipe.getRecipeIngredients();
+
+        if (mRecipe != null){
+            for (int i = 0; i < mRecipe.getRecipeIngredients().size(); i++){
+                Recipe.RecipeIngredient recipeIngredient = ingredientArray.get(i);
+
+                String ingredientName = recipeIngredient.getIngredient();
+                String ingredientQuantity = recipeIngredient.getQuantity();
+                String ingredientMeasure = recipeIngredient.getMeasure();
+
+                stringBuilder.append(ingredientName + " ");
+                stringBuilder.append(ingredientQuantity + " ");
+                stringBuilder.append(ingredientMeasure + " ");
+                stringBuilder.append(System.getProperty("line.separator"));
+            }
+        }
+        return stringBuilder.toString();
     }
 
     public void initExoPlayer(String url){
