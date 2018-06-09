@@ -170,7 +170,7 @@ public class DetailFragment extends Fragment {
         }
     }
 
-    public void sendRecipeToWidget(){
+    public void broadcastRecipe(){
         Intent intent = new Intent();
         intent.setAction(INGREDIENT_INTENT);
         intent.putExtra(INGREDIENT_ARRAY, mRecipe);

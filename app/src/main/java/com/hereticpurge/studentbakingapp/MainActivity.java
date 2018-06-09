@@ -15,16 +15,19 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity implements VolleyResponseListener {
 
     private static final String VOLLEY_INITIAL_QUERY_TAG = "VolleyInitQuery";
-    private static final String WIDGET_CALL_INDEX = "WidgetCallIndex";
+    public static final String WIDGET_CALL_INDEX = "WidgetCallIndex";
+
     private boolean isTablet;
 
     private DetailFragment mDetailFragment;
     private RecipeListFragment mRecipeListFragment;
-    private RecipeController mController = RecipeController.getController();
+    private RecipeController mController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mController = RecipeController.getController();
 
         isTablet = getResources().getBoolean(R.bool.isTablet);
 
@@ -89,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         // display the same index position.
         int startIndex = getIntent().getIntExtra(WIDGET_CALL_INDEX, -1);
         if (startIndex >= 0 & startIndex <= mController.getRecipeList().size() - 1){
-            RecipeController.getController().setSelectedIndex(startIndex);
+            mController.setSelectedIndex(startIndex);
             recipeSelected();
         }
     }
