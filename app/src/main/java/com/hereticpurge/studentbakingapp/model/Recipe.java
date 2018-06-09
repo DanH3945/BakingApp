@@ -70,7 +70,7 @@ public class Recipe implements Serializable {
         mRecipeIngredients = recipeIngredients;
     }
 
-    public class RecipeStep {
+    public class RecipeStep implements Serializable{
 
         private String mStepId;
         private String mShortDescription;
@@ -127,7 +127,7 @@ public class Recipe implements Serializable {
         }
     }
 
-    public class RecipeIngredient {
+    public class RecipeIngredient implements Serializable{
 
         private String mQuantity;
         private String mMeasure;

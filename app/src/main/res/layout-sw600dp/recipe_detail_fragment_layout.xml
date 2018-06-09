@@ -10,14 +10,14 @@
 
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="350dp"
         android:id="@+id/detail_player_view"
         android:layout_gravity="center"
-        android:visibility="invisible" />
+        android:visibility="invisible"/>
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="400dp"
         android:id="@+id/detail_image_view"
         android:src="@mipmap/ic_launcher"
         android:layout_gravity="center"
@@ -31,18 +31,22 @@
         tools:text="Short Description"
         android:gravity="center"
         android:textSize="25sp"
-        android:paddingTop="40dp"
+        android:paddingTop="5dp"
         android:textColor="@color/textColor"/>
-
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/detail_text_long_description"
-        tools:text="Long Description"
-        android:paddingTop="25dp"
-        android:minHeight="80dp"
-        android:textSize="15sp"
-        android:paddingLeft="15dp"
-        android:textColor="@color/textColor"/>
+        android:layout_height="245dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_text_long_description"
+            tools:text="Long Description"
+            android:paddingTop="15dp"
+            android:minHeight="80dp"
+            android:textSize="15sp"
+            android:paddingLeft="50dp"
+            android:textColor="@color/textColor"/>
+    </ScrollView>
 
 </LinearLayout>

@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
             switchDetailTransaction.replace(R.id.main_fragment_container, mDetailFragment);
             switchDetailTransaction.addToBackStack(null);
             switchDetailTransaction.commit();
+            Timber.d("Initial recipe Selected in tablet mode");
         }
         getFragmentManager().executePendingTransactions();
         mDetailFragment.displayRecipe();
