@@ -9,12 +9,16 @@ import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hereticpurge.studentbakingapp.model.Recipe;
+
+import java.util.ArrayList;
+
 public class BakingAppWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
+        CharSequence widgetText = context.getString(R.string.widget_default);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
         views.setTextViewText(R.id.appwidget_text, widgetText);
@@ -46,12 +50,12 @@ public class BakingAppWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if (intent.hasExtra(DetailFragment.RECIPE_BROADCAST_ID)){
-            Toast.makeText(context, "got it", Toast.LENGTH_LONG).show();
-        }
-
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
-        remoteViews.setTextViewText(R.id.appwidget_text, "It worked");
+
+        if (intent.hasExtra(DetailFragment.RECIPE_BROADCAST_INGREDIENT_STRING)){
+            remoteViews.setTextViewText(R.id.appwidget_text,
+                    intent.getStringExtra(DetailFragment.RECIPE_BROADCAST_INGREDIENT_STRING));
+        }
         ComponentName componentName = new ComponentName(context, BakingAppWidget.class);
         AppWidgetManager.getInstance(context).updateAppWidget(componentName, remoteViews);
         super.onReceive(context, intent);

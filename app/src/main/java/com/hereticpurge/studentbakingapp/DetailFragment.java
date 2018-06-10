@@ -35,7 +35,7 @@ import timber.log.Timber;
 public class DetailFragment extends Fragment {
 
     public static String RECIPE_BROADCAST_INTENT = "android.appwidget.action.APPWIDGET_UPDATE";
-    public static String RECIPE_BROADCAST_ID = "recipeBroadcastID";
+    public static String RECIPE_BROADCAST_INGREDIENT_STRING = "recipeBroadcastIngredientString";
 
     private Recipe mRecipe;
 
@@ -173,7 +173,7 @@ public class DetailFragment extends Fragment {
     public void broadcastRecipe(){
         Intent intent = new Intent();
         intent.setAction(RECIPE_BROADCAST_INTENT);
-        intent.putExtra(RECIPE_BROADCAST_ID, mRecipe);
+        intent.putExtra(RECIPE_BROADCAST_INGREDIENT_STRING, getFormattedIngredientList());
         getActivity().sendBroadcast(intent);
     }
 
