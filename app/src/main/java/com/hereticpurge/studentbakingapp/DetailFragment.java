@@ -28,15 +28,14 @@ import com.hereticpurge.studentbakingapp.model.Recipe;
 import com.hereticpurge.studentbakingapp.model.RecipeController;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import timber.log.Timber;
 
 public class DetailFragment extends Fragment {
 
-    public static String INGREDIENT_INTENT = "com.hereticpurge.studentbakingapp.INGREDIENT_INTENT";
-    public static String INGREDIENT_ARRAY = "ingredientArray";
+    public static String RECIPE_BROADCAST_INTENT = "android.appwidget.action.APPWIDGET_UPDATE";
+    public static String RECIPE_BROADCAST_INGREDIENT_STRING = "recipeBroadcastIngredientString";
 
     private Recipe mRecipe;
 
@@ -92,6 +91,7 @@ public class DetailFragment extends Fragment {
         if (mRecipe != null && mStepIndex < (mRecipe.getRecipeSteps().size() - 1)) {
             showStep(mRecipe.getRecipeSteps().get(++mStepIndex));
             Timber.d("Now Showing Step #: " + mStepIndex);
+            broadcastRecipe();
         }
     }
 
@@ -170,10 +170,10 @@ public class DetailFragment extends Fragment {
         }
     }
 
-    public void sendRecipeToWidget(){
+    public void broadcastRecipe(){
         Intent intent = new Intent();
-        intent.setAction(INGREDIENT_INTENT);
-        intent.putExtra(INGREDIENT_ARRAY, mRecipe);
+        intent.setAction(RECIPE_BROADCAST_INTENT);
+        intent.putExtra(RECIPE_BROADCAST_INGREDIENT_STRING, getFormattedIngredientList());
         getActivity().sendBroadcast(intent);
     }
 

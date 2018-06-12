@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.hereticpurge.studentbakingapp.MainActivity">
 
     <FrameLayout
-        android:layout_width="match_parent"
+        android:layout_width="400dp"
         android:layout_height="match_parent"
-        android:id="@+id/main_fragment_container"/>
+        android:id="@+id/main_fragment_container"
+        android:layout_gravity="left"/>
 
     <FrameLayout
-        android:layout_width="match_parent"
+        android:layout_width="600dp"
         android:layout_height="match_parent"
-        android:id="@+id/recipe_detail_fragment_container"/>
+        android:id="@+id/recipe_detail_fragment_container"
+        android:layout_gravity="right"/>
 
-</android.support.constraint.ConstraintLayout>
+</FrameLayout>
