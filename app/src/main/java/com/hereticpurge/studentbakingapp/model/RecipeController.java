@@ -44,4 +44,8 @@ public final class RecipeController {
         return mRecipeList.get(mSelectedIndex);
     }
 
+    public int getSelectedIndex(){
+        return mSelectedIndex;
+    }
+
 }

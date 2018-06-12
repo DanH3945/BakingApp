@@ -1,6 +1,7 @@
 package com.hereticpurge.studentbakingapp;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
@@ -15,7 +16,7 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity implements VolleyResponseListener {
 
     private static final String VOLLEY_INITIAL_QUERY_TAG = "VolleyInitQuery";
-    public static final String WIDGET_CALL_INDEX = "WidgetCallIndex";
+    private static final String VOLLEY_FROM_WIDGET_QUERY = "VolleyWidgetQuery";
 
     private boolean isTablet;
 
@@ -27,7 +28,9 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         mController = RecipeController.getController();
+        mController.clear();
 
         isTablet = getResources().getBoolean(R.bool.isTablet);
 
@@ -44,8 +47,13 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         mRecipeListFragment = new RecipeListFragment();
         mDetailFragment = new DetailFragment();
 
-        NetworkUtils.queryRecipeJson(VOLLEY_INITIAL_QUERY_TAG, this, this);
-
+        if (getIntent().hasExtra(DetailFragment.RECIPE_BROADCAST_INDEX_ID)){
+            Timber.d("Setting selected Index from start intent");
+            mController.setSelectedIndex(getIntent().getIntExtra(DetailFragment.RECIPE_BROADCAST_INDEX_ID, -1));
+            NetworkUtils.queryRecipeJson(VOLLEY_FROM_WIDGET_QUERY, this, this);
+        } else {
+            NetworkUtils.queryRecipeJson(VOLLEY_INITIAL_QUERY_TAG, this, this);
+        }
     }
 
     @Override
@@ -57,7 +65,11 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
                 JsonUtils.populateRecipesFromJson(jsonString);
                 initUI();
                 break;
-
+            case VOLLEY_FROM_WIDGET_QUERY:
+                JsonUtils.populateRecipesFromJson(jsonString);
+                initUI();
+                recipeSelected();
+                break;
             default:
                 Toast.makeText(this, R.string.volley_response_error, Toast.LENGTH_LONG).show();
                 Timber.d("OnVolleyResponse: Volley Response Switch Failure");
@@ -69,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
     public void onVolleyErrorResponse(VolleyError volleyError, String requestTag) {
         Toast.makeText(this, R.string.network_error, Toast.LENGTH_LONG).show();
         Timber.d("OnVolleyErrorResponse: Volley Network Error");
+        volleyError.printStackTrace();
     }
 
     public void initUI(){
@@ -87,14 +100,6 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
                 recipeSelected();
             }
         }
-        // When the activity is started from an intent sent via the widget it should send
-        // the index position of the recipe it's displaying.  This bit will grab the index and
-        // display the same index position.
-        int startIndex = getIntent().getIntExtra(WIDGET_CALL_INDEX, -1);
-        if (startIndex >= 0 & startIndex <= mController.getRecipeList().size() - 1){
-            mController.setSelectedIndex(startIndex);
-            recipeSelected();
-        }
     }
 
     public void recipeSelected(){
@@ -107,6 +112,15 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         }
         getFragmentManager().executePendingTransactions();
         mDetailFragment.displayRecipe();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        int selectedIndex = intent.getIntExtra(DetailFragment.RECIPE_BROADCAST_INDEX_ID, -1);
+        Timber.d("Received intent with index of: " + selectedIndex);
+        mController.setSelectedIndex(selectedIndex);
+        recipeSelected();
+        super.onNewIntent(intent);
     }
 
     @Override

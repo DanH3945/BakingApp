@@ -34,8 +34,9 @@ import timber.log.Timber;
 
 public class DetailFragment extends Fragment {
 
-    public static String RECIPE_BROADCAST_INTENT = "android.appwidget.action.APPWIDGET_UPDATE";
-    public static String RECIPE_BROADCAST_INGREDIENT_STRING = "recipeBroadcastIngredientString";
+    public static final String RECIPE_BROADCAST_INTENT = "android.appwidget.action.APPWIDGET_UPDATE";
+    public static final String RECIPE_BROADCAST_INGREDIENT_STRING = "recipeBroadcastIngredientString";
+    public static final String RECIPE_BROADCAST_INDEX_ID = "recipeBroadcastID";
 
     private Recipe mRecipe;
 
@@ -84,6 +85,7 @@ public class DetailFragment extends Fragment {
             Timber.d("Loaded Recipe: " + mRecipe.getRecipeTitle());
             mStepIndex = START_INDEX;
             nextStep();
+            broadcastRecipe();
         }
     }
 
@@ -91,7 +93,6 @@ public class DetailFragment extends Fragment {
         if (mRecipe != null && mStepIndex < (mRecipe.getRecipeSteps().size() - 1)) {
             showStep(mRecipe.getRecipeSteps().get(++mStepIndex));
             Timber.d("Now Showing Step #: " + mStepIndex);
-            broadcastRecipe();
         }
     }
 
@@ -174,6 +175,8 @@ public class DetailFragment extends Fragment {
         Intent intent = new Intent();
         intent.setAction(RECIPE_BROADCAST_INTENT);
         intent.putExtra(RECIPE_BROADCAST_INGREDIENT_STRING, getFormattedIngredientList());
+        intent.putExtra(RECIPE_BROADCAST_INDEX_ID, mController.getSelectedIndex());
+        Timber.d("Broadcast sent with index of: " + mController.getSelectedIndex());
         getActivity().sendBroadcast(intent);
     }
 
@@ -303,7 +306,7 @@ public class DetailFragment extends Fragment {
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-
+            v.performClick();
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     xStart = event.getX();
