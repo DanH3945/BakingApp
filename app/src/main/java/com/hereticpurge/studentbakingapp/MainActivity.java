@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         // display the same index position.
         int startIndex = getIntent().getIntExtra(WIDGET_CALL_INDEX, -1);
         if (startIndex >= 0 & startIndex <= mController.getRecipeList().size() - 1){
-            RecipeController.getController().setSelectedIndex(startIndex);
+            mController.setSelectedIndex(startIndex);
             recipeSelected();
         }
     }
