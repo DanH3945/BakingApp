@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -64,6 +65,14 @@ public class DetailFragment extends Fragment {
 
         view.setOnTouchListener(new SimpleSwipeListener());
 
+        FloatingActionButton broadcastFab = view.findViewById(R.id.broadcast_fab);
+        broadcastFab.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                broadcastRecipe();
+            }
+        });
+
         return view;
     }
 
@@ -85,7 +94,6 @@ public class DetailFragment extends Fragment {
             Timber.d("Loaded Recipe: " + mRecipe.getRecipeTitle());
             mStepIndex = START_INDEX;
             nextStep();
-            broadcastRecipe();
         }
     }
 
@@ -182,7 +190,7 @@ public class DetailFragment extends Fragment {
 
     private String getFormattedIngredientList(){
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Ingredients: ");
+        stringBuilder.append(mRecipe.getRecipeTitle() + " Ingredients: ");
         stringBuilder.append(System.getProperty("line.separator"));
         stringBuilder.append(System.getProperty("line.separator"));
 
