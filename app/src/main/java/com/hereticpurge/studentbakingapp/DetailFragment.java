@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -112,8 +113,12 @@ public class DetailFragment extends Fragment {
     }
 
     private void showStep(Recipe.RecipeStep recipeStep) {
+
+        // make sure the views are cleared and all video assets are unassigned before loading a new
+        // step.
         clearViews();
 
+        // setting the short description of the step
         mShortDesc.setText(recipeStep.getShortDescription());
 
         // If this is the first step display the ingredient list in the long description area.
@@ -133,6 +138,9 @@ public class DetailFragment extends Fragment {
 
         String fileExtension;
 
+        // determining the file extension to send to the media loader method.  if no media
+        // is detected through the urls it defaults to the cupcake image instead of calling
+        // loadMedia.
         if (!vidUrl.equals("")) {
             fileExtension = vidUrl.substring(vidUrl.lastIndexOf("."), vidUrl.length());
             loadMedia(vidUrl, fileExtension);
@@ -152,11 +160,14 @@ public class DetailFragment extends Fragment {
 
     private void loadMedia(String url, String fileExtension) {
 
+        // switch with fall through to allow loading the correct media assets based on file extension
+        // if an unknown extension is seen it just pops a toast.
         switch (fileExtension) {
             case "":
                 break;
 
             case ".mp4":
+                // exoplayer handles all the background loading and buffering for video assets.
                 Timber.d(".mp4 Detected");
                 mImageView.setVisibility(View.GONE);
                 mExoPlayerView.setVisibility(View.VISIBLE);
@@ -167,6 +178,7 @@ public class DetailFragment extends Fragment {
             case ".png":
             case ".gif":
             case ".jpg":
+                // picasso handles all the background asset loading for images.
                 Timber.d("Image detected");
                 Picasso.with(getActivity().getApplicationContext()).load(url).into(mImageView);
                 mExoPlayerView.setVisibility(View.GONE);
@@ -174,12 +186,16 @@ public class DetailFragment extends Fragment {
                 break;
 
             default:
+                Toast.makeText(getActivity().getApplicationContext(), R.string.unknown_file_type, Toast.LENGTH_LONG);
                 break;
 
         }
     }
 
     public void broadcastRecipe(){
+
+        // Building and sending an intent to be grabbed by the widget for displaying the
+        // ingredients.
         Intent intent = new Intent();
         intent.setAction(RECIPE_BROADCAST_INTENT);
         intent.putExtra(RECIPE_BROADCAST_INGREDIENT_STRING, getFormattedIngredientList());
@@ -189,6 +205,8 @@ public class DetailFragment extends Fragment {
     }
 
     private String getFormattedIngredientList(){
+
+        // Building a formatted string of ingredients to be displayed.
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(mRecipe.getRecipeTitle() + " Ingredients: ");
         stringBuilder.append(System.getProperty("line.separator"));
@@ -225,6 +243,8 @@ public class DetailFragment extends Fragment {
         */
 
         // Continuing with the new suggested implementation
+
+        // ExoPlayer initialization
         mExoPlayer = ExoPlayerFactory.newSimpleInstance(
                 new DefaultRenderersFactory(getActivity().getApplicationContext()),
                 new DefaultTrackSelector(),
@@ -253,13 +273,25 @@ public class DetailFragment extends Fragment {
         ));
         MediaSource mediaSource = mediaFactory.createMediaSource(uri);
         // Continue normal implementation of the ExoPlayer unchanged from class suggestions.
+
+        // Setting the size and fill of the video player so it fills the correct portion of the screen.
         mExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
         mExoPlayer.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT);
         mExoPlayer.prepare(mediaSource);
-        mExoPlayer.setPlayWhenReady(true);
+
+        // Checks whether this is the first step before deciding to immedietely play the video or
+        // not.  When starting the program from the widget it quickly got annoying having the video
+        // start right away.  Candidate for a preference option.
+        if (mStepIndex != 0){
+            mExoPlayer.setPlayWhenReady(true);
+        } else {
+            mExoPlayer.setPlayWhenReady(false);
+        }
     }
 
     private void clearViews() {
+
+        // Clears the views and releases the exoplayer if there is one.
         mShortDesc.setText("");
         mLongDesc.setText("");
         mImageView.setVisibility(View.GONE);
@@ -273,6 +305,10 @@ public class DetailFragment extends Fragment {
     }
 
     public boolean onBack(){
+
+        // this is called from MainActivity when the back button is pressed to determine if
+        // the detail fragment should be reversed one step or if the app should default to
+        // the system back button default.
         if (mStepIndex < 1){
             clearViews();
             Timber.d("Ready to exit DetailFragment");
@@ -286,6 +322,8 @@ public class DetailFragment extends Fragment {
 
     @Override
     public void onPause() {
+
+        // stores the current position of the playing video if the app is paused.
         if (mExoPlayer != null){
             mPlayPosition = mExoPlayer.getCurrentPosition();
             mExoPlayer.setPlayWhenReady(false);
@@ -295,6 +333,7 @@ public class DetailFragment extends Fragment {
 
     @Override
     public void onResume() {
+        // restores video play position when resumed.
         super.onResume();
         if (mExoPlayer != null){
             mExoPlayer.seekTo(mPlayPosition);
@@ -304,19 +343,36 @@ public class DetailFragment extends Fragment {
 
     class SimpleSwipeListener implements View.OnTouchListener {
 
+        // I wanted to try implementing my own swipe listener instead of using an existing one as
+        // a demo.
+
+        // start by creating variable to hold position information of clicks.
         private float xStart = 0;
         private float xStop = 0;
         private float yStart = 0;
         private float yStop = 0;
 
-        float SWIPE_X_MIN_DISTANCE = 200;
-        float SWIPE_Y_MAX_DISTANCE = 500;
+        // the following 2 variables are used to prevent the listener from registering swipe events
+        // when the user may not mean to swipe.  Random screen touches etc.
+
+        // the min distance a user must swipe across the screen for this listener to register it as
+        // a swipe.
+        final float SWIPE_X_MIN_DISTANCE = 200;
+
+        // the max y distance (up / down) a user is allowed to press before the event won't be
+        // recognized.
+        final float SWIPE_Y_MAX_DISTANCE = 500;
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+            // send the click to the view so that other methods (accessibility stuff) can see
+            // that an event occured and where.
             v.performClick();
+
+            // basic math stuff for working on an x,y grid.
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
+                    // store the starting position
                     xStart = event.getX();
                     yStart = event.getY();
                     Timber.d("X POSITION: " + Float.toString(xStart));
@@ -324,12 +380,15 @@ public class DetailFragment extends Fragment {
                     break;
 
                 case MotionEvent.ACTION_UP:
+                    // store the stop position
                     xStop = event.getX();
                     yStop = event.getY();
 
+                    // getting the absolute values to determine swipe length.
                     float xTrans = Math.abs(xStop - xStart);
                     float yTrans = Math.abs(yStop - yStart);
 
+                    // making sure the motion was intentional by ensuring motion distances.
                     if (xTrans > SWIPE_X_MIN_DISTANCE && yTrans < SWIPE_Y_MAX_DISTANCE) {
                         if (xStart > xStop) {
                             Timber.d("Swipe from right to left");
@@ -342,6 +401,7 @@ public class DetailFragment extends Fragment {
                     Timber.d("----------  MOTION EVENT BREAK  ----------");
                     break;
             }
+            // tell the system that the event was handled.
             return true;
         }
     }

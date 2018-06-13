@@ -44,21 +44,26 @@
             android:id="@+id/broadcast_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="10dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="10dp"
             android:src="@drawable/check_circle_outline"/>
 
     </android.support.design.widget.CoordinatorLayout>
 
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/detail_text_long_description"
-        tools:text="Long Description"
-        android:paddingTop="25dp"
-        android:minHeight="80dp"
-        android:textSize="15sp"
-        android:paddingLeft="15dp"
-        android:textColor="@color/textColor"/>
+        android:layout_height="245dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_text_long_description"
+            tools:text="Long Description"
+            android:paddingTop="15dp"
+            android:minHeight="80dp"
+            android:textSize="15sp"
+            android:paddingLeft="50dp"
+            android:textColor="@color/textColor"/>
+    </ScrollView>
 
 </LinearLayout>

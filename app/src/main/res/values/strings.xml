@@ -4,6 +4,7 @@
     // Error strings
     <string name="network_error">Network Error</string>
     <string name="volley_response_error">Volley Response Error</string>
+    <string name="unknown_file_type">Unknown File Type</string>
 
     // Strings for recycler view in recipe_list_fragment_layout using recipe_list_fragment_item
     <string name="recycler_list_title">Recipe:</string>
