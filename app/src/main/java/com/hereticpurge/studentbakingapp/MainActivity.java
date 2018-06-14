@@ -1,7 +1,9 @@
 package com.hereticpurge.studentbakingapp;
 
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
@@ -18,14 +20,19 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
     private static final String VOLLEY_INITIAL_QUERY_TAG = "VolleyInitQuery";
     private static final String VOLLEY_FROM_WIDGET_QUERY = "VolleyWidgetQuery";
 
+    private static final String DETAIL_BUNDLE_ID = "detailBundle";
+
     private boolean isTablet;
 
     private DetailFragment mDetailFragment;
     private RecipeListFragment mRecipeListFragment;
     private RecipeController mController;
 
+    private Bundle mSavedInstanceState;
+    private Bundle mDetailBundle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mSavedInstanceState = savedInstanceState;
         super.onCreate(savedInstanceState);
 
 
@@ -100,6 +107,14 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
                 recipeSelected();
             }
         }
+
+        mDetailBundle = null;
+        try{
+            mDetailBundle = mSavedInstanceState.getBundle(DETAIL_BUNDLE_ID);
+            recipeSelected();
+        } catch (NullPointerException e){
+            Timber.d("Null bundle detected.  Skipping");
+        }
     }
 
     public void recipeSelected(){
@@ -108,10 +123,17 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
             switchDetailTransaction.replace(R.id.main_fragment_container, mDetailFragment);
             switchDetailTransaction.addToBackStack(null);
             switchDetailTransaction.commit();
-            Timber.d("Initial recipe Selected in tablet mode");
+            Timber.d("Initial recipe Selected");
         }
+
         getFragmentManager().executePendingTransactions();
-        mDetailFragment.displayRecipe();
+        mDetailFragment.displayRecipe(mDetailBundle);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBundle(DETAIL_BUNDLE_ID, mDetailFragment.getState());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -137,6 +159,8 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
 
     @Override
     protected void onDestroy() {
+        // if the process dies before .clear() is called it doesn't matter since the controller will
+        // effectively clear with the death of the process.
         mController.clear();
         super.onDestroy();
     }

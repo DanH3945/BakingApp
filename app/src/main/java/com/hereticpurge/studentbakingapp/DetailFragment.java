@@ -41,10 +41,13 @@ public class DetailFragment extends Fragment {
     public static final String RECIPE_BROADCAST_INGREDIENT_STRING = "recipeBroadcastIngredientString";
     public static final String RECIPE_BROADCAST_INDEX_ID = "recipeBroadcastID";
 
+    private static final String BUNDLE_STEP_ID = "bundledStepIndex";
+    private static final String BUNDLE_PLAY_POSITION = "bundledPlayPosition";
+
     private Recipe mRecipe;
 
     private int mStepIndex;
-    private final int START_INDEX = -1;
+    static final int START_INDEX = -1;
 
     private RecipeController mController = RecipeController.getController();
 
@@ -57,7 +60,7 @@ public class DetailFragment extends Fragment {
     private PlayerView mExoPlayerView;
     private SimpleExoPlayer mExoPlayer;
 
-    private long mPlayPosition;
+    private long mPlayPosition = 0;
 
     @Nullable
     @Override
@@ -94,12 +97,27 @@ public class DetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public void displayRecipe() {
+    public Bundle getState(){
+        Bundle bundle = new Bundle();
+        bundle.putInt(BUNDLE_STEP_ID, mStepIndex);
+        bundle.putLong(BUNDLE_PLAY_POSITION, mExoPlayer.getCurrentPosition());
+        return bundle;
+    }
+
+    public void displayRecipe(@Nullable Bundle bundle) {
         Timber.d("displayRecipe Called");
+        mStepIndex = START_INDEX;
+
         if (mController.getSelected() != null) {
             mRecipe = mController.getSelected();
-            Timber.d("Loaded Recipe: " + mRecipe.getRecipeTitle());
-            mStepIndex = START_INDEX;
+        }
+
+        if (bundle != null){
+            Timber.d("Non Null bundle detected setting index and play position");
+            mStepIndex = bundle.getInt(BUNDLE_STEP_ID);
+            mPlayPosition = bundle.getLong(BUNDLE_PLAY_POSITION);
+            showStep(mRecipe.getRecipeSteps().get(mStepIndex));
+        } else {
             nextStep();
         }
     }
@@ -288,6 +306,8 @@ public class DetailFragment extends Fragment {
         // Checks whether this is the first step before deciding to immedietely play the video or
         // not.  When starting the program from the widget it quickly got annoying having the video
         // start right away.  Candidate for a preference option.
+
+        mExoPlayer.seekTo(mPlayPosition);
         if (mStepIndex != 0){
             mExoPlayer.setPlayWhenReady(true);
         } else {
