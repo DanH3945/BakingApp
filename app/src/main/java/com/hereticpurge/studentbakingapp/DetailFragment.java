@@ -44,7 +44,7 @@ public class DetailFragment extends Fragment {
     public static final String RECIPE_BROADCAST_INDEX_ID = "recipeBroadcastID";
 
     private static final String BUNDLE_STEP_ID = "bundledStepIndex";
-    private static final String BUNDLE_PLAY_POSITION = "bundledPlayPosition";
+    private static final String BUNDLE_PLAY_POSITION_ID = "bundledPlayPosition";
 
     private Recipe mRecipe;
 
@@ -102,7 +102,7 @@ public class DetailFragment extends Fragment {
     public Bundle getState(){
         Bundle bundle = new Bundle();
         bundle.putInt(BUNDLE_STEP_ID, mStepIndex);
-        bundle.putLong(BUNDLE_PLAY_POSITION, mExoPlayer.getCurrentPosition());
+        bundle.putLong(BUNDLE_PLAY_POSITION_ID, mExoPlayer.getCurrentPosition());
         return bundle;
     }
 
@@ -117,7 +117,7 @@ public class DetailFragment extends Fragment {
         if (bundle != null){
             Timber.d("Non Null bundle detected setting index and play position");
             mStepIndex = bundle.getInt(BUNDLE_STEP_ID);
-            mPlayPosition = bundle.getLong(BUNDLE_PLAY_POSITION);
+            mPlayPosition = bundle.getLong(BUNDLE_PLAY_POSITION_ID);
             showStep(mRecipe.getRecipeSteps().get(mStepIndex));
         } else {
             nextStep();
