@@ -2,6 +2,8 @@ package com.hereticpurge.studentbakingapp;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -306,6 +309,12 @@ public class DetailFragment extends Fragment {
         // Checks whether this is the first step before deciding to immedietely play the video or
         // not.  When starting the program from the widget it quickly got annoying having the video
         // start right away.  Candidate for a preference option.
+
+        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mExoPlayerView.getLayoutParams();
+            layoutParams.width = layoutParams.MATCH_PARENT;
+            layoutParams.height = layoutParams.MATCH_PARENT;
+        }
 
         mExoPlayer.seekTo(mPlayPosition);
         if (mStepIndex != 0){

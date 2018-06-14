@@ -132,7 +132,11 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putBundle(DETAIL_BUNDLE_ID, mDetailFragment.getState());
+        try {
+            outState.putBundle(DETAIL_BUNDLE_ID, mDetailFragment.getState());
+        } catch (NullPointerException e){
+            Timber.d("Failed to get state.  App will revert to default");
+        }
         super.onSaveInstanceState(outState);
     }
 
