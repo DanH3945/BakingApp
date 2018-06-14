@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         mRecipeListFragment = new RecipeListFragment();
         mDetailFragment = new DetailFragment();
 
+        // checking to see if the widget started the app.  if not use default.
         if (getIntent().hasExtra(DetailFragment.RECIPE_BROADCAST_INDEX_ID)){
             Timber.d("Setting selected Index from start intent");
             mController.setSelectedIndex(getIntent().getIntExtra(DetailFragment.RECIPE_BROADCAST_INDEX_ID, -1));
@@ -69,15 +70,19 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         // switch statement to handle incoming responses in case more need to be added later.
         switch (requestTag){
             case VOLLEY_INITIAL_QUERY_TAG:
+                // if the app was loaded by the user clicking the icon on their home screen
                 JsonUtils.populateRecipesFromJson(jsonString);
                 initUI();
                 break;
             case VOLLEY_FROM_WIDGET_QUERY:
+                // if the app started from the widget the correct recipe is loaded from its first
+                // step
                 JsonUtils.populateRecipesFromJson(jsonString);
                 initUI();
                 recipeSelected();
                 break;
             default:
+                // this should never happen to a user.
                 Toast.makeText(this, R.string.volley_response_error, Toast.LENGTH_LONG).show();
                 Timber.d("OnVolleyResponse: Volley Response Switch Failure");
         }
@@ -86,9 +91,9 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
 
     @Override
     public void onVolleyErrorResponse(VolleyError volleyError, String requestTag) {
+        // Called if there was a network error resulting in no web connectivity.
         Toast.makeText(this, R.string.network_error, Toast.LENGTH_LONG).show();
         Timber.d("OnVolleyErrorResponse: Volley Network Error");
-        volleyError.printStackTrace();
     }
 
     public void initUI(){
@@ -109,6 +114,8 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         }
 
         mDetailBundle = null;
+        // if the configuration changed (screen rotation, etc) this will grab the saved state and
+        // call recipe selected to redisplay the recipe step.
         try{
             mDetailBundle = mSavedInstanceState.getBundle(DETAIL_BUNDLE_ID);
             recipeSelected();
@@ -133,8 +140,12 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         try {
+            // save the detail fragment state when necessary.
             outState.putBundle(DETAIL_BUNDLE_ID, mDetailFragment.getState());
         } catch (NullPointerException e){
+            // this happens if the screen is rotated too quickly before the exo player
+            // instances are properly setup in which case it null pointer is ignored and
+            // the app continues as normal.
             Timber.d("Failed to get state.  App will revert to default");
         }
         super.onSaveInstanceState(outState);
@@ -160,13 +171,4 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
             super.onBackPressed();
         }
     }
-
-    @Override
-    protected void onDestroy() {
-        // if the process dies before .clear() is called it doesn't matter since the controller will
-        // effectively clear with the death of the process.
-        mController.clear();
-        super.onDestroy();
-    }
-
 }
