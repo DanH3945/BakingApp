@@ -43,7 +43,7 @@ public class DetailFragment extends Fragment {
     private Recipe mRecipe;
 
     private int mStepIndex;
-    private int START_INDEX = -1;
+    private final int START_INDEX = -1;
 
     private RecipeController mController = RecipeController.getController();
 
@@ -186,7 +186,7 @@ public class DetailFragment extends Fragment {
                 break;
 
             default:
-                Toast.makeText(getActivity().getApplicationContext(), R.string.unknown_file_type, Toast.LENGTH_LONG);
+                Toast.makeText(getActivity().getApplicationContext(), R.string.unknown_file_type, Toast.LENGTH_LONG).show();
                 break;
 
         }
@@ -207,10 +207,10 @@ public class DetailFragment extends Fragment {
     private String getFormattedIngredientList(){
 
         // Building a formatted string of ingredients to be displayed.
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(mRecipe.getRecipeTitle() + " Ingredients: ");
-        stringBuilder.append(System.getProperty("line.separator"));
-        stringBuilder.append(System.getProperty("line.separator"));
+        StringBuilder stringBuilder = new StringBuilder()
+                .append(mRecipe.getRecipeTitle() + " Ingredients: ")
+                .append(System.getProperty("line.separator"))
+                .append(System.getProperty("line.separator"));
 
         ArrayList<Recipe.RecipeIngredient> ingredientArray = mRecipe.getRecipeIngredients();
 
@@ -222,10 +222,10 @@ public class DetailFragment extends Fragment {
                 String ingredientQuantity = recipeIngredient.getQuantity();
                 String ingredientMeasure = recipeIngredient.getMeasure();
 
-                stringBuilder.append(ingredientName + " ");
-                stringBuilder.append(ingredientQuantity + " ");
-                stringBuilder.append(ingredientMeasure + " ");
-                stringBuilder.append(System.getProperty("line.separator"));
+                stringBuilder.append(ingredientName + " ")
+                        .append(ingredientQuantity + " ")
+                        .append(ingredientMeasure + " ")
+                        .append(System.getProperty("line.separator"));
             }
         }
         return stringBuilder.toString();
