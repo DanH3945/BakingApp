@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +66,11 @@ public class DetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.recipe_detail_fragment_layout, container, false);
 
         view.setOnTouchListener(new SimpleSwipeListener());
+
+        // Ugly fix for the scroll view not pushing click events to the main detail fragment view.
+        // It'll do for now but needs improved if doing an actual release version.
+        ScrollView scrollview = view.findViewById(R.id.detail_scroll_view);
+        scrollview.setOnTouchListener(new SimpleSwipeListener());
 
         FloatingActionButton broadcastFab = view.findViewById(R.id.broadcast_fab);
         broadcastFab.setOnClickListener(new View.OnClickListener(){
@@ -365,9 +371,11 @@ public class DetailFragment extends Fragment {
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+
+            Timber.d("Caught motion event.");
             // send the click to the view so that other methods (accessibility stuff) can see
             // that an event occured and where.
-            v.performClick();
+            // v.performClick();
 
             // basic math stuff for working on an x,y grid.
             switch (event.getAction()) {

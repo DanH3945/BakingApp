@@ -52,7 +52,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="245dp">
+        android:layout_height="245dp"
+        android:id="@+id/detail_scroll_view">
 
         <TextView
             android:layout_width="match_parent"
@@ -62,7 +63,7 @@
             android:paddingTop="15dp"
             android:minHeight="80dp"
             android:textSize="15sp"
-            android:paddingLeft="50dp"
+            android:paddingLeft="35dp"
             android:textColor="@color/textColor"/>
     </ScrollView>
 
