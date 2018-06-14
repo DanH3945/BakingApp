@@ -1,9 +1,7 @@
 package com.hereticpurge.studentbakingapp;
 
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
@@ -31,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
     private Bundle mSavedInstanceState;
     private Bundle mDetailBundle;
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         mSavedInstanceState = savedInstanceState;
         super.onCreate(savedInstanceState);
