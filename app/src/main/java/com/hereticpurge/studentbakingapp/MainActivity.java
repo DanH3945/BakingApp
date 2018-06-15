@@ -175,12 +175,17 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
 
     @Override
     public void onBackPressed() {
-        Timber.d("Back pressed. Backstack count: " + getFragmentManager().getBackStackEntryCount());
-        if (getFragmentManager().getBackStackEntryCount() > 0 && mDetailFragment.onBack()) {
-            Timber.d("Popping back stack");
-            getFragmentManager().popBackStack();
-        } else if (getFragmentManager().getBackStackEntryCount() == 0) {
-            Timber.d("Calling super onBackPressed");
+        if (!isTablet) {
+            Timber.d("Back pressed. Backstack count: " + getFragmentManager().getBackStackEntryCount());
+            if (getFragmentManager().getBackStackEntryCount() > 0 && mDetailFragment.onBack()) {
+                Timber.d("Popping back stack");
+                getFragmentManager().popBackStack();
+            } else if (getFragmentManager().getBackStackEntryCount() == 0) {
+                Timber.d("Calling super onBackPressed");
+                super.onBackPressed();
+            }
+        }
+        if (isTablet && mDetailFragment.onBack()) {
             super.onBackPressed();
         }
     }
