@@ -18,7 +18,7 @@
     <string name="ingredients_sent_text">Ingredients Sent to Widget</string>
 
     // Detail Fragment Strings
-    <string name="swipe_left_or_right">Swipe Left or Right for next step</string>
+    <string name="swipe_left_or_right">Swipe Left or Right to change step</string>
 
 
 </resources>
