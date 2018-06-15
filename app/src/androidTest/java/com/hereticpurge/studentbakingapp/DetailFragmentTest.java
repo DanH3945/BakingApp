@@ -33,11 +33,11 @@ public class DetailFragmentTest {
     public void getIdlingResource(){
         mIdlingResource = mainActivityTestRule.getActivity().getIdlingResource();
         IdlingRegistry.getInstance().register(mIdlingResource);
-        Espresso.onView(ViewMatchers.withId(R.id.recipe_list_recyclerview)).perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
     }
 
     @Test
     public void SwipeSwitchesSteps(){
+        Espresso.onView(ViewMatchers.withId(R.id.recipe_list_recyclerview)).perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
         Espresso.onView(ViewMatchers.withId(R.id.detail_text_long_description)).perform(ViewActions.swipeLeft());
         Espresso.onView(ViewMatchers.withId(R.id.detail_text_short_description)).check(ViewAssertions.matches(ViewMatchers.withText("Starting prep")));
     }
