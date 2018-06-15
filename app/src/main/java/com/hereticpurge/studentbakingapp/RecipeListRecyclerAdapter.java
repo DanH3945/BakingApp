@@ -22,6 +22,7 @@ public class RecipeListRecyclerAdapter extends RecyclerView.Adapter<RecipeListRe
         mMainActivity = mainActivity;
     }
 
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

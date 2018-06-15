@@ -3,10 +3,15 @@ package com.hereticpurge.studentbakingapp;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.hereticpurge.studentbakingapp.IdlingResource.SimpleIdlingResource;
 import com.hereticpurge.studentbakingapp.model.RecipeController;
 import com.hereticpurge.studentbakingapp.utilities.JsonUtils;
 import com.hereticpurge.studentbakingapp.utilities.NetworkUtils;
@@ -28,12 +33,13 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
 
     private Bundle mSavedInstanceState;
     private Bundle mDetailBundle;
-    @Override
 
+    @Nullable private SimpleIdlingResource mSimpleIdlingResource;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSavedInstanceState = savedInstanceState;
         super.onCreate(savedInstanceState);
-
 
         mController = RecipeController.getController();
         mController.clear();
@@ -121,6 +127,11 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         } catch (NullPointerException e){
             Timber.d("Null bundle detected.  Skipping");
         }
+
+        if(mSimpleIdlingResource != null){
+            getFragmentManager().executePendingTransactions();
+            mSimpleIdlingResource.setIdleState(true);
+        }
     }
 
     public void recipeSelected(){
@@ -169,5 +180,14 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
             Timber.d("Calling super onBackPressed");
             super.onBackPressed();
         }
+    }
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource(){
+        if (mSimpleIdlingResource == null){
+            mSimpleIdlingResource = new SimpleIdlingResource();
+        }
+        return mSimpleIdlingResource;
     }
 }
