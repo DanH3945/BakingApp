@@ -2,6 +2,7 @@
 package com.hereticpurge.studentbakingapp;
 
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.IdlingPolicies;
 import android.support.test.espresso.IdlingRegistry;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.action.ViewActions;
@@ -17,6 +18,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.concurrent.TimeUnit;
+
 import static android.support.test.espresso.action.ViewActions.click;
 
 @RunWith(AndroidJUnit4.class)
@@ -30,6 +33,7 @@ public class DetailFragmentTest {
 
     @Before
     public void getIdlingResource() {
+        IdlingPolicies.setIdlingResourceTimeout(60000, TimeUnit.MILLISECONDS);
         mIdlingResource = mainActivityTestRule.getActivity().getIdlingResource();
         IdlingRegistry.getInstance().register(mIdlingResource);
     }

@@ -101,8 +101,14 @@ public class DetailFragment extends Fragment {
 
     public Bundle getState() {
         Bundle bundle = new Bundle();
-        bundle.putInt(BUNDLE_STEP_ID, mStepIndex);
-        bundle.putLong(BUNDLE_PLAY_POSITION_ID, mExoPlayer.getCurrentPosition());
+
+        if (!mRecipe.getRecipeSteps().get(mStepIndex).getVideoUrl().equals("")) {
+            bundle.putInt(BUNDLE_STEP_ID, mStepIndex);
+            Timber.d("Saving Index State for Video: " + mStepIndex);
+            bundle.putLong(BUNDLE_PLAY_POSITION_ID, mExoPlayer.getCurrentPosition());
+        } else {
+            bundle.putInt(BUNDLE_STEP_ID, mStepIndex);
+        }
         return bundle;
     }
 
@@ -117,7 +123,12 @@ public class DetailFragment extends Fragment {
         if (bundle != null) {
             Timber.d("Non Null bundle detected setting index and play position");
             mStepIndex = bundle.getInt(BUNDLE_STEP_ID);
-            mPlayPosition = bundle.getLong(BUNDLE_PLAY_POSITION_ID);
+            Timber.d("Loaded Index State: " + mStepIndex);
+            try {
+                mPlayPosition = bundle.getLong(BUNDLE_PLAY_POSITION_ID);
+            } catch (Exception e) {
+                // Skip this step if the bundle doesn't have the correct extra
+            }
             showStep(mRecipe.getRecipeSteps().get(mStepIndex));
         } else {
             nextStep();
@@ -178,9 +189,7 @@ public class DetailFragment extends Fragment {
 
             Timber.d("Thumbnail Url Extension is: " + fileExtension);
         } else {
-            mImageView.setImageResource(R.mipmap.cupcake);
-            mExoPlayerView.setVisibility(View.GONE);
-            mImageView.setVisibility(View.VISIBLE);
+            loadMedia(null, "");
         }
     }
 
@@ -190,6 +199,13 @@ public class DetailFragment extends Fragment {
         // if an unknown extension is seen it just pops a toast.
         switch (fileExtension) {
             case "":
+                mImageView.setImageResource(R.mipmap.cupcake);
+                mExoPlayerView.setVisibility(View.GONE);
+                mImageView.setVisibility(View.VISIBLE);
+                if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
+                        && !getResources().getBoolean(R.bool.isTablet)){
+                    mImageView.setVisibility(View.GONE);
+                }
                 break;
 
             case ".mp4":
@@ -197,6 +213,14 @@ public class DetailFragment extends Fragment {
                 Timber.d(".mp4 Detected");
                 mImageView.setVisibility(View.GONE);
                 mExoPlayerView.setVisibility(View.VISIBLE);
+
+                if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
+                        && !getResources().getBoolean(R.bool.isTablet)) {
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mExoPlayerView.getLayoutParams();
+                    layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                }
+
                 initExoPlayer(url);
                 break;
 
@@ -309,13 +333,6 @@ public class DetailFragment extends Fragment {
         // Checks whether this is the first step before deciding to immedietely play the video or
         // not.  When starting the program from the widget it quickly got annoying having the video
         // start right away.  Candidate for a preference option.
-
-        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
-                && !getResources().getBoolean(R.bool.isTablet)) {
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mExoPlayerView.getLayoutParams();
-            layoutParams.width = layoutParams.MATCH_PARENT;
-            layoutParams.height = layoutParams.MATCH_PARENT;
-        }
 
         mExoPlayer.seekTo(mPlayPosition);
         if (mStepIndex != 0) {
