@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,71 +9,79 @@
     android:background="@color/colorPrimary"
     android:id="@+id/detail_fragment_main_layout">
 
-    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:id="@+id/detail_player_view"
-        android:layout_gravity="center"
-        android:visibility="invisible"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:id="@+id/detail_image_view"
-        android:src="@mipmap/ic_launcher"
-        android:layout_gravity="center"
-        android:scaleType="fitXY"
-        android:visibility="gone"
-        android:contentDescription="TODO" />
-
-    <android.support.design.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
+        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/detail_text_short_description"
-            tools:text="Short Description"
-            android:gravity="center"
-            android:textSize="25sp"
-            android:textColor="@color/white"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:background="@color/colorPrimaryDark"/>
+            android:layout_height="350dp"
+            android:id="@+id/detail_player_view"
+            android:layout_gravity="center"
+            android:visibility="invisible"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/broadcast_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/check_circle_outline"/>
-
-    </android.support.design.widget.CoordinatorLayout>
-
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="190dp"
-        android:id="@+id/detail_scroll_view">
-
-        <TextView
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/detail_text_long_description"
-            tools:text="Long Description"
-            android:paddingTop="15dp"
-            android:minHeight="80dp"
-            android:textSize="15sp"
-            android:paddingLeft="35dp"
-            android:textColor="@color/textColor"/>
-    </ScrollView>
+            android:layout_height="350dp"
+            android:id="@+id/detail_image_view"
+            android:src="@mipmap/ic_launcher"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            android:contentDescription="TODO" />
+
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_text_short_description"
+                tools:text="Short Description"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:textColor="@color/white"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:background="@color/colorPrimaryDark"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/broadcast_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/check_circle_outline"/>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="190dp"
+            android:id="@+id/detail_scroll_view">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_text_long_description"
+                tools:text="Long Description"
+                android:paddingTop="15dp"
+                android:minHeight="80dp"
+                android:textSize="15sp"
+                android:paddingLeft="35dp"
+                android:textColor="@color/textColor"/>
+        </ScrollView>
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/swipe_left_or_right"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:layout_alignParentBottom="true"/>
 
-</LinearLayout>
+</RelativeLayout>
