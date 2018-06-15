@@ -19,6 +19,7 @@ public class SimpleIdlingResource implements IdlingResource {
 
     @Override
     public boolean isIdleNow() {
+        Timber.d("Checking Idler State: " + mIsIdleNow.toString());
         return mIsIdleNow.get();
     }
 

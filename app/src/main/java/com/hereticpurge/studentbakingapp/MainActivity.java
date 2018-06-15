@@ -78,6 +78,10 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
                 // if the app was loaded by the user clicking the icon on their home screen
                 JsonUtils.populateRecipesFromJson(jsonString);
                 initUI();
+                if(mSimpleIdlingResource != null){
+                    getFragmentManager().executePendingTransactions();
+                    mSimpleIdlingResource.setIdleState(true);
+                }
                 break;
             case VOLLEY_FROM_WIDGET_QUERY:
                 // if the app started from the widget the correct recipe is loaded from its first
@@ -126,11 +130,6 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
             recipeSelected();
         } catch (NullPointerException e){
             Timber.d("Null bundle detected.  Skipping");
-        }
-
-        if(mSimpleIdlingResource != null){
-            getFragmentManager().executePendingTransactions();
-            mSimpleIdlingResource.setIdleState(true);
         }
     }
 
@@ -184,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
 
     @VisibleForTesting
     @NonNull
-    public IdlingResource getIdlingResource(){
+    public synchronized IdlingResource getIdlingResource(){
         if (mSimpleIdlingResource == null){
             mSimpleIdlingResource = new SimpleIdlingResource();
         }

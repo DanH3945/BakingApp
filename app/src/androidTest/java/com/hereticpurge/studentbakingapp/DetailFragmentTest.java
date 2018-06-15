@@ -17,6 +17,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.logging.Handler;
+
 import static android.support.test.espresso.action.ViewActions.click;
 
 @RunWith(AndroidJUnit4.class)
@@ -31,13 +33,13 @@ public class DetailFragmentTest {
     public void getIdlingResource(){
         mIdlingResource = mainActivityTestRule.getActivity().getIdlingResource();
         IdlingRegistry.getInstance().register(mIdlingResource);
+        Espresso.onView(ViewMatchers.withId(R.id.recipe_list_recyclerview)).perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
     }
 
     @Test
     public void SwipeSwitchesSteps(){
-        Espresso.onView(ViewMatchers.withId(R.id.recipe_list_recyclerview)).perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
-        // Espresso.onView(ViewMatchers.withId(R.id.detail_fragment_main_layout)).perform(ViewActions.swipeLeft());
-        Espresso.onView(ViewMatchers.withId(R.id.detail_text_short_description)).check(ViewAssertions.matches(ViewMatchers.withText("Yellow Cake")));
+        Espresso.onView(ViewMatchers.withId(R.id.detail_text_long_description)).perform(ViewActions.swipeLeft());
+        Espresso.onView(ViewMatchers.withId(R.id.detail_text_short_description)).check(ViewAssertions.matches(ViewMatchers.withText("Starting prep")));
     }
 
     @After
