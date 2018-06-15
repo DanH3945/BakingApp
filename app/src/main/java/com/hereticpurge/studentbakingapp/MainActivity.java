@@ -1,7 +1,6 @@
 package com.hereticpurge.studentbakingapp;
 
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,7 +33,8 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
     private Bundle mSavedInstanceState;
     private Bundle mDetailBundle;
 
-    @Nullable private SimpleIdlingResource mSimpleIdlingResource;
+    @Nullable
+    private SimpleIdlingResource mSimpleIdlingResource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         mDetailFragment = new DetailFragment();
 
         // checking to see if the widget started the app.  if not use default.
-        if (getIntent().hasExtra(DetailFragment.RECIPE_BROADCAST_INDEX_ID)){
+        if (getIntent().hasExtra(DetailFragment.RECIPE_BROADCAST_INDEX_ID)) {
 
             Timber.d("Setting selected Index from start intent with index: "
                     + getIntent().getIntExtra(DetailFragment.RECIPE_BROADCAST_INDEX_ID, -1));
@@ -76,12 +76,12 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
     public void onVolleyResponse(String jsonString, String requestTag) {
 
         // switch statement to handle incoming responses in case more need to be added later.
-        switch (requestTag){
+        switch (requestTag) {
             case VOLLEY_INITIAL_QUERY_TAG:
                 // if the app was loaded by the user clicking the icon on their home screen
                 JsonUtils.populateRecipesFromJson(jsonString);
                 initUI();
-                if(mSimpleIdlingResource != null){
+                if (mSimpleIdlingResource != null) {
                     getFragmentManager().executePendingTransactions();
                     mSimpleIdlingResource.setIdleState(true);
                 }
@@ -108,19 +108,19 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         Timber.d("OnVolleyErrorResponse: Volley Network Error");
     }
 
-    public void initUI(){
+    private void initUI() {
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.main_fragment_container, mRecipeListFragment);
         transaction.commit();
 
-        if (isTablet){
+        if (isTablet) {
             Timber.d("Tablet detected.  Loading tablet layout.");
             FragmentTransaction detailTransaction = getFragmentManager().beginTransaction();
             detailTransaction.replace(R.id.recipe_detail_fragment_container, mDetailFragment);
             detailTransaction.commit();
 
-            if (mController.getSelected() != null){
+            if (mController.getSelected() != null) {
                 recipeSelected();
             }
         }
@@ -128,16 +128,16 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         mDetailBundle = null;
         // if the configuration changed (screen rotation, etc) this will grab the saved state and
         // call recipe selected to redisplay the recipe step.
-        try{
+        try {
             mDetailBundle = mSavedInstanceState.getBundle(DETAIL_BUNDLE_ID);
             recipeSelected();
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             Timber.d("Null bundle detected.  Skipping");
         }
     }
 
-    public void recipeSelected(){
-        if (!isTablet){
+    public void recipeSelected() {
+        if (!isTablet) {
             FragmentTransaction switchDetailTransaction = getFragmentManager().beginTransaction();
             switchDetailTransaction.replace(R.id.main_fragment_container, mDetailFragment);
             switchDetailTransaction.addToBackStack(null);
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         try {
             // save the detail fragment state when necessary.
             outState.putBundle(DETAIL_BUNDLE_ID, mDetailFragment.getState());
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             // this happens if the screen is rotated too quickly before the exo player
             // instances are properly setup in which case it null pointer is ignored and
             // the app continues as normal.
@@ -176,10 +176,10 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
     @Override
     public void onBackPressed() {
         Timber.d("Back pressed. Backstack count: " + getFragmentManager().getBackStackEntryCount());
-        if (getFragmentManager().getBackStackEntryCount() > 0 && mDetailFragment.onBack()){
+        if (getFragmentManager().getBackStackEntryCount() > 0 && mDetailFragment.onBack()) {
             Timber.d("Popping back stack");
             getFragmentManager().popBackStack();
-        } else if (getFragmentManager().getBackStackEntryCount() == 0){
+        } else if (getFragmentManager().getBackStackEntryCount() == 0) {
             Timber.d("Calling super onBackPressed");
             super.onBackPressed();
         }
@@ -187,8 +187,8 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
 
     @VisibleForTesting
     @NonNull
-    public synchronized IdlingResource getIdlingResource(){
-        if (mSimpleIdlingResource == null){
+    public synchronized IdlingResource getIdlingResource() {
+        if (mSimpleIdlingResource == null) {
             mSimpleIdlingResource = new SimpleIdlingResource();
         }
         return mSimpleIdlingResource;

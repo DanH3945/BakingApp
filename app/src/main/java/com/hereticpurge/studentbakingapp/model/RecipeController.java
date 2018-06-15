@@ -1,7 +1,5 @@
 package com.hereticpurge.studentbakingapp.model;
 
-import android.support.annotation.Nullable;
-
 import java.util.ArrayList;
 
 import timber.log.Timber;
@@ -12,10 +10,11 @@ public final class RecipeController {
     private static RecipeController sController;
     private int mSelectedIndex = 0;
 
-    private RecipeController(){}
+    private RecipeController() {
+    }
 
-    public static RecipeController getController(){
-        if (sController == null){
+    public static RecipeController getController() {
+        if (sController == null) {
             sController = new RecipeController();
             Timber.v("getController: new Controller Created");
         }
@@ -23,25 +22,25 @@ public final class RecipeController {
         return sController;
     }
 
-    public ArrayList<Recipe> getRecipeList(){
+    public ArrayList<Recipe> getRecipeList() {
         return mRecipeList;
     }
 
-    public void addRecipe(Recipe recipe){
+    public void addRecipe(Recipe recipe) {
         mRecipeList.add(recipe);
         Timber.d("addRecipe: Recipe added.  " + "Total list size is: " + mRecipeList.size());
     }
 
-    public void clear(){
+    public void clear() {
         mRecipeList.clear();
     }
 
-    public void setSelectedIndex(int index){
+    public void setSelectedIndex(int index) {
         mSelectedIndex = index;
     }
 
-    public Recipe getSelected(){
-        if(mSelectedIndex > -1 && mSelectedIndex < mRecipeList.size()){
+    public Recipe getSelected() {
+        if (mSelectedIndex > -1 && mSelectedIndex < mRecipeList.size()) {
             return mRecipeList.get(mSelectedIndex);
         } else {
             mSelectedIndex = 0;
@@ -49,7 +48,7 @@ public final class RecipeController {
         }
     }
 
-    public int getSelectedIndex(){
+    public int getSelectedIndex() {
         return mSelectedIndex;
     }
 

@@ -13,11 +13,11 @@ import timber.log.Timber;
 
 public final class JsonUtils {
 
-    public static void populateRecipesFromJson(String jsonString){
+    public static void populateRecipesFromJson(String jsonString) {
 
         try {
             JSONArray baseArray = new JSONArray(jsonString);
-            for(int recipeNum = 0; recipeNum < baseArray.length(); recipeNum++){
+            for (int recipeNum = 0; recipeNum < baseArray.length(); recipeNum++) {
 
                 RecipeBuilder builder = new RecipeBuilder();
                 Timber.d("populateRecipesFromJson: RecipeBuilder created");
@@ -33,7 +33,7 @@ public final class JsonUtils {
 
                 JSONArray ingredientArray = recipeJsonObject.getJSONArray("ingredients");
 
-                for(int ingredientNum = 0; ingredientNum < ingredientArray.length(); ingredientNum++){
+                for (int ingredientNum = 0; ingredientNum < ingredientArray.length(); ingredientNum++) {
                     JSONObject ingredientObject = ingredientArray.getJSONObject(ingredientNum);
 
                     Map<String, String> ingredient = new HashMap<>();
@@ -47,7 +47,7 @@ public final class JsonUtils {
 
                 JSONArray stepArray = recipeJsonObject.getJSONArray("steps");
 
-                for (int stepNum = 0; stepNum < stepArray.length(); stepNum++){
+                for (int stepNum = 0; stepNum < stepArray.length(); stepNum++) {
                     JSONObject stepObject = stepArray.getJSONObject(stepNum);
 
                     Map<String, String> step = new HashMap<>();

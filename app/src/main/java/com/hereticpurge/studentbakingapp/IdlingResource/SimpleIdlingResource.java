@@ -9,8 +9,9 @@ import timber.log.Timber;
 
 public class SimpleIdlingResource implements IdlingResource {
 
-    @Nullable private volatile ResourceCallback mCallBack;
-    private AtomicBoolean mIsIdleNow = new AtomicBoolean(false);
+    @Nullable
+    private volatile ResourceCallback mCallBack;
+    private final AtomicBoolean mIsIdleNow = new AtomicBoolean(false);
 
     @Override
     public String getName() {
@@ -28,10 +29,10 @@ public class SimpleIdlingResource implements IdlingResource {
         mCallBack = callback;
     }
 
-    public void setIdleState(boolean state){
+    public void setIdleState(boolean state) {
         Timber.d("Switching Idler State to: " + Boolean.toString(state));
         mIsIdleNow.set(state);
-        if (isIdleNow() && mCallBack != null){
+        if (isIdleNow() && mCallBack != null) {
             mCallBack.onTransitionToIdle();
         }
     }

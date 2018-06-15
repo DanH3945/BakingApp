@@ -17,33 +17,32 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.logging.Handler;
-
 import static android.support.test.espresso.action.ViewActions.click;
 
 @RunWith(AndroidJUnit4.class)
 public class DetailFragmentTest {
 
-    @Rule public ActivityTestRule<MainActivity> mainActivityTestRule =
+    @Rule
+    public final ActivityTestRule<MainActivity> mainActivityTestRule =
             new ActivityTestRule<>(MainActivity.class);
 
     private IdlingResource mIdlingResource;
 
     @Before
-    public void getIdlingResource(){
+    public void getIdlingResource() {
         mIdlingResource = mainActivityTestRule.getActivity().getIdlingResource();
         IdlingRegistry.getInstance().register(mIdlingResource);
     }
 
     @Test
-    public void SwipeSwitchesSteps(){
+    public void SwipeSwitchesSteps() {
         Espresso.onView(ViewMatchers.withId(R.id.recipe_list_recyclerview)).perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
         Espresso.onView(ViewMatchers.withId(R.id.detail_text_long_description)).perform(ViewActions.swipeLeft());
         Espresso.onView(ViewMatchers.withId(R.id.detail_text_short_description)).check(ViewAssertions.matches(ViewMatchers.withText("Starting prep")));
     }
 
     @After
-    public void releaseIdle(){
+    public void releaseIdle() {
         IdlingRegistry.getInstance().unregister(mIdlingResource);
     }
 

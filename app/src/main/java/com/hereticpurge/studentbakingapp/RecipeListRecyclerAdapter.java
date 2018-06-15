@@ -14,10 +14,10 @@ import java.util.ArrayList;
 
 public class RecipeListRecyclerAdapter extends RecyclerView.Adapter<RecipeListRecyclerAdapter.ViewHolder> {
 
-    ArrayList<Recipe> mRecipeList;
-    MainActivity mMainActivity;
+    private final ArrayList<Recipe> mRecipeList;
+    private final MainActivity mMainActivity;
 
-    RecipeListRecyclerAdapter(MainActivity mainActivity){
+    RecipeListRecyclerAdapter(MainActivity mainActivity) {
         mRecipeList = RecipeController.getController().getRecipeList();
         mMainActivity = mainActivity;
     }
@@ -61,7 +61,7 @@ public class RecipeListRecyclerAdapter extends RecyclerView.Adapter<RecipeListRe
         final TextView ingredientNumTextView;
         final TextView stepsNumTextView;
 
-        public ViewHolder(final View itemView) {
+        ViewHolder(final View itemView) {
             super(itemView);
 
             this.titleTextView = itemView.findViewById(R.id.recipe_list_item_title);

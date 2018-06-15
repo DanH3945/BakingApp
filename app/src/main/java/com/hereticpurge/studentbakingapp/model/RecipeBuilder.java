@@ -26,7 +26,7 @@ public class RecipeBuilder {
 
     private final RecipeController sController;
 
-    public RecipeBuilder(){
+    public RecipeBuilder() {
         mCurrentRecipe = new Recipe();
         sController = RecipeController.getController();
     }
@@ -43,7 +43,7 @@ public class RecipeBuilder {
         return this;
     }
 
-    public RecipeBuilder setServings(String servings){
+    public RecipeBuilder setServings(String servings) {
         mCurrentRecipe.setServes(servings);
         Timber.v("Servings set");
         return this;

@@ -12,8 +12,8 @@ import timber.log.Timber;
 
 public class BakingAppWidget extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+    private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+                                        int appWidgetId) {
 
         CharSequence widgetText = context.getString(R.string.widget_default);
         // Construct the RemoteViews object
@@ -48,7 +48,7 @@ public class BakingAppWidget extends AppWidgetProvider {
 
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
 
-        if (intent.hasExtra(DetailFragment.RECIPE_BROADCAST_INGREDIENT_STRING)){
+        if (intent.hasExtra(DetailFragment.RECIPE_BROADCAST_INGREDIENT_STRING)) {
             remoteViews.setTextViewText(R.id.appwidget_text,
                     intent.getStringExtra(DetailFragment.RECIPE_BROADCAST_INGREDIENT_STRING));
         }

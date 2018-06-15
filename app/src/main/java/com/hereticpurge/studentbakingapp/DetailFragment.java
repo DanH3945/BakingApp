@@ -39,7 +39,7 @@ import timber.log.Timber;
 
 public class DetailFragment extends Fragment {
 
-    public static final String RECIPE_BROADCAST_INTENT = "android.appwidget.action.APPWIDGET_UPDATE";
+    private static final String RECIPE_BROADCAST_INTENT = "android.appwidget.action.APPWIDGET_UPDATE";
     public static final String RECIPE_BROADCAST_INGREDIENT_STRING = "recipeBroadcastIngredientString";
     public static final String RECIPE_BROADCAST_INDEX_ID = "recipeBroadcastID";
 
@@ -49,9 +49,9 @@ public class DetailFragment extends Fragment {
     private Recipe mRecipe;
 
     private int mStepIndex;
-    static final int START_INDEX = -1;
+    private static final int START_INDEX = -1;
 
-    private RecipeController mController = RecipeController.getController();
+    private final RecipeController mController = RecipeController.getController();
 
     private TextView mShortDesc;
     private TextView mLongDesc;
@@ -78,7 +78,7 @@ public class DetailFragment extends Fragment {
         scrollview.setOnTouchListener(new SimpleSwipeListener());
 
         FloatingActionButton broadcastFab = view.findViewById(R.id.broadcast_fab);
-        broadcastFab.setOnClickListener(new View.OnClickListener(){
+        broadcastFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 broadcastRecipe();
@@ -99,7 +99,7 @@ public class DetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public Bundle getState(){
+    public Bundle getState() {
         Bundle bundle = new Bundle();
         bundle.putInt(BUNDLE_STEP_ID, mStepIndex);
         bundle.putLong(BUNDLE_PLAY_POSITION_ID, mExoPlayer.getCurrentPosition());
@@ -114,7 +114,7 @@ public class DetailFragment extends Fragment {
             mRecipe = mController.getSelected();
         }
 
-        if (bundle != null){
+        if (bundle != null) {
             Timber.d("Non Null bundle detected setting index and play position");
             mStepIndex = bundle.getInt(BUNDLE_STEP_ID);
             mPlayPosition = bundle.getLong(BUNDLE_PLAY_POSITION_ID);
@@ -218,7 +218,7 @@ public class DetailFragment extends Fragment {
         }
     }
 
-    public void broadcastRecipe(){
+    private void broadcastRecipe() {
 
         // Building and sending an intent to be grabbed by the widget for displaying the
         // ingredients.
@@ -231,7 +231,7 @@ public class DetailFragment extends Fragment {
         Toast.makeText(getActivity().getApplicationContext(), R.string.ingredients_sent_text, Toast.LENGTH_LONG).show();
     }
 
-    private String getFormattedIngredientList(){
+    private String getFormattedIngredientList() {
 
         // Building a formatted string of ingredients to be displayed.
         StringBuilder stringBuilder = new StringBuilder()
@@ -241,8 +241,8 @@ public class DetailFragment extends Fragment {
 
         ArrayList<Recipe.RecipeIngredient> ingredientArray = mRecipe.getRecipeIngredients();
 
-        if (mRecipe != null){
-            for (int i = 0; i < mRecipe.getRecipeIngredients().size(); i++){
+        if (mRecipe != null) {
+            for (int i = 0; i < mRecipe.getRecipeIngredients().size(); i++) {
                 Recipe.RecipeIngredient recipeIngredient = ingredientArray.get(i);
 
                 String ingredientName = recipeIngredient.getIngredient();
@@ -258,7 +258,7 @@ public class DetailFragment extends Fragment {
         return stringBuilder.toString();
     }
 
-    public void initExoPlayer(String url){
+    private void initExoPlayer(String url) {
 
         // This is the old implementation suggested in the class.  This implementation is now
         // deprecated in favor of the method below the comment.
@@ -310,14 +310,14 @@ public class DetailFragment extends Fragment {
         // not.  When starting the program from the widget it quickly got annoying having the video
         // start right away.  Candidate for a preference option.
 
-        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mExoPlayerView.getLayoutParams();
             layoutParams.width = layoutParams.MATCH_PARENT;
             layoutParams.height = layoutParams.MATCH_PARENT;
         }
 
         mExoPlayer.seekTo(mPlayPosition);
-        if (mStepIndex != 0){
+        if (mStepIndex != 0) {
             mExoPlayer.setPlayWhenReady(true);
         } else {
             mExoPlayer.setPlayWhenReady(false);
@@ -339,12 +339,12 @@ public class DetailFragment extends Fragment {
         }
     }
 
-    public boolean onBack(){
+    public boolean onBack() {
 
         // this is called from MainActivity when the back button is pressed to determine if
         // the detail fragment should be reversed one step or if the app should default to
         // the system back button default.
-        if (mStepIndex < 1){
+        if (mStepIndex < 1) {
             clearViews();
             Timber.d("Ready to exit DetailFragment");
             return true;
@@ -359,7 +359,7 @@ public class DetailFragment extends Fragment {
     public void onPause() {
 
         // stores the current position of the playing video if the app is paused.
-        if (mExoPlayer != null){
+        if (mExoPlayer != null) {
             mPlayPosition = mExoPlayer.getCurrentPosition();
             mExoPlayer.setPlayWhenReady(false);
         }
@@ -370,7 +370,7 @@ public class DetailFragment extends Fragment {
     public void onResume() {
         // restores video play position when resumed.
         super.onResume();
-        if (mExoPlayer != null){
+        if (mExoPlayer != null) {
             mExoPlayer.seekTo(mPlayPosition);
             mExoPlayer.setPlayWhenReady(true);
         }

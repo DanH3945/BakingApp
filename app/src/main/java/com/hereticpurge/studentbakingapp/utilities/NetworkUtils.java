@@ -1,7 +1,6 @@
 package com.hereticpurge.studentbakingapp.utilities;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -18,12 +17,12 @@ public final class NetworkUtils {
     private static final String RECIPE_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
     // Overloaded the method to accept both outside url input as well as the default url from above.  Not used now but for future proofing.
-    public static void queryRecipeJson(String requestTag, Context context, VolleyResponseListener volleyResponseListener){
+    public static void queryRecipeJson(String requestTag, Context context, VolleyResponseListener volleyResponseListener) {
         Timber.d("Query started without URL.  Using Default");
         queryRecipeJson(RECIPE_URL, requestTag, context, volleyResponseListener);
     }
 
-    public static void queryRecipeJson(String url, final String requestTag, Context context, final VolleyResponseListener volleyResponseListener) {
+    private static void queryRecipeJson(String url, final String requestTag, Context context, final VolleyResponseListener volleyResponseListener) {
         Timber.d("Query started with URL");
         RequestQueue queue = Volley.newRequestQueue(context);
 

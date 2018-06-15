@@ -11,19 +11,19 @@ public class Recipe implements Serializable {
     private ArrayList<RecipeStep> mRecipeSteps;
     private ArrayList<RecipeIngredient> mRecipeIngredients;
 
-    public Recipe(){
+    public Recipe() {
         mRecipeSteps = new ArrayList<>();
         mRecipeIngredients = new ArrayList<>();
     }
 
-    public void addIngredient(String quantity, String measure, String ingredient){
+    public void addIngredient(String quantity, String measure, String ingredient) {
 
         RecipeIngredient recipeIngredient = new RecipeIngredient(quantity, measure, ingredient);
         mRecipeIngredients.add(recipeIngredient);
 
     }
 
-    public void addStep(String stepId, String shortDescription, String description, String videoUrl, String thumbnailUrl){
+    public void addStep(String stepId, String shortDescription, String description, String videoUrl, String thumbnailUrl) {
 
         RecipeStep recipeStep = new RecipeStep(stepId, shortDescription, description, videoUrl, thumbnailUrl);
         mRecipeSteps.add(recipeStep);
@@ -46,11 +46,11 @@ public class Recipe implements Serializable {
         mRecipeTitle = recipeTitle;
     }
 
-    public String getServings(){
+    public String getServings() {
         return mServings;
     }
 
-    public void setServes(String servings){
+    public void setServes(String servings) {
         this.mServings = servings;
     }
 
@@ -70,7 +70,7 @@ public class Recipe implements Serializable {
         mRecipeIngredients = recipeIngredients;
     }
 
-    public class RecipeStep implements Serializable{
+    public class RecipeStep implements Serializable {
 
         private String mStepId;
         private String mShortDescription;
@@ -127,7 +127,7 @@ public class Recipe implements Serializable {
         }
     }
 
-    public class RecipeIngredient implements Serializable{
+    public class RecipeIngredient implements Serializable {
 
         private String mQuantity;
         private String mMeasure;

@@ -23,7 +23,8 @@
         android:src="@mipmap/ic_launcher"
         android:layout_gravity="center"
         android:scaleType="fitXY"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:contentDescription="TODO" />
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
