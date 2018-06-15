@@ -203,7 +203,7 @@ public class DetailFragment extends Fragment {
                 mExoPlayerView.setVisibility(View.GONE);
                 mImageView.setVisibility(View.VISIBLE);
                 if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
-                        && !getResources().getBoolean(R.bool.isTablet)){
+                        && !getResources().getBoolean(R.bool.isTablet)) {
                     mImageView.setVisibility(View.GONE);
                 }
                 break;
