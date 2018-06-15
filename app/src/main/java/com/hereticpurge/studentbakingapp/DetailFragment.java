@@ -199,7 +199,8 @@ public class DetailFragment extends Fragment {
         // if an unknown extension is seen it just pops a toast.
         switch (fileExtension) {
             case "":
-                mImageView.setImageResource(R.mipmap.cupcake);
+                // cupcake_pexels image is from www.Pexels.com
+                mImageView.setImageResource(R.mipmap.cupcake_pexels);
                 mExoPlayerView.setVisibility(View.GONE);
                 mImageView.setVisibility(View.VISIBLE);
                 if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
