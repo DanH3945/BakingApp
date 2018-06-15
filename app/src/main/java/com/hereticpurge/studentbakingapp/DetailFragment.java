@@ -401,7 +401,8 @@ public class DetailFragment extends Fragment {
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-
+            ScrollView scrollView = getView().findViewById(R.id.detail_scroll_view);
+            scrollView.onTouchEvent(event);
             Timber.d("Caught motion event.");
             // send the click to the view so that other methods (accessibility stuff) can see
             // that an event occured and where.

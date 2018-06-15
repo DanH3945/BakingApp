@@ -18,7 +18,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="350dp"
         android:id="@+id/detail_image_view"
         android:src="@mipmap/ic_launcher"
         android:layout_gravity="center"
@@ -55,12 +55,12 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="245dp"
+        android:layout_height="190dp"
         android:id="@+id/detail_scroll_view">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/detail_text_long_description"
             tools:text="Long Description"
             android:paddingTop="15dp"
@@ -69,5 +69,11 @@
             android:paddingLeft="35dp"
             android:textColor="@color/textColor"/>
     </ScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/swipe_left_or_right"
+        android:gravity="center"/>
 
 </LinearLayout>

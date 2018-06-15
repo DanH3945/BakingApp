@@ -68,4 +68,10 @@
             android:textColor="@color/textColor"/>
     </ScrollView>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/swipe_left_or_right"
+        android:gravity="center"/>
+
 </LinearLayout>
