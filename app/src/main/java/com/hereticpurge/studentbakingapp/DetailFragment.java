@@ -310,7 +310,8 @@ public class DetailFragment extends Fragment {
         // not.  When starting the program from the widget it quickly got annoying having the video
         // start right away.  Candidate for a preference option.
 
-        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
+                && !getResources().getBoolean(R.bool.isTablet)) {
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mExoPlayerView.getLayoutParams();
             layoutParams.width = layoutParams.MATCH_PARENT;
             layoutParams.height = layoutParams.MATCH_PARENT;
