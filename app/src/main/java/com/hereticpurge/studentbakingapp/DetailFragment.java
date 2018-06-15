@@ -228,6 +228,7 @@ public class DetailFragment extends Fragment {
         intent.putExtra(RECIPE_BROADCAST_INDEX_ID, mController.getSelectedIndex());
         Timber.d("Broadcast sent with index of: " + mController.getSelectedIndex());
         getActivity().sendBroadcast(intent);
+        Toast.makeText(getActivity().getApplicationContext(), R.string.ingredients_sent_text, Toast.LENGTH_LONG).show();
     }
 
     private String getFormattedIngredientList(){

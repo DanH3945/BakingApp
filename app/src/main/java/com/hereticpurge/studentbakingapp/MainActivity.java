@@ -61,7 +61,10 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
 
         // checking to see if the widget started the app.  if not use default.
         if (getIntent().hasExtra(DetailFragment.RECIPE_BROADCAST_INDEX_ID)){
-            Timber.d("Setting selected Index from start intent");
+
+            Timber.d("Setting selected Index from start intent with index: "
+                    + getIntent().getIntExtra(DetailFragment.RECIPE_BROADCAST_INDEX_ID, -1));
+
             mController.setSelectedIndex(getIntent().getIntExtra(DetailFragment.RECIPE_BROADCAST_INDEX_ID, -1));
             NetworkUtils.queryRecipeJson(VOLLEY_FROM_WIDGET_QUERY, this, this);
         } else {
@@ -160,14 +163,15 @@ public class MainActivity extends AppCompatActivity implements VolleyResponseLis
         super.onSaveInstanceState(outState);
     }
 
-    @Override
+    // Tried to catch incoming broadcast intents here.  Didn't work.  Move along.  =)
+    /*@Override
     protected void onNewIntent(Intent intent) {
         int selectedIndex = intent.getIntExtra(DetailFragment.RECIPE_BROADCAST_INDEX_ID, -1);
         Timber.d("Received intent with index of: " + selectedIndex);
         mController.setSelectedIndex(selectedIndex);
         recipeSelected();
         super.onNewIntent(intent);
-    }
+    }*/
 
     @Override
     public void onBackPressed() {

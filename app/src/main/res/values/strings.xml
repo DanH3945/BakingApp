@@ -15,6 +15,7 @@
     // Widget Strings
     <string name="widget_default">Select a Recipe \nIngredients will appear here</string>
     <string name="add_widget">Add widget</string>
+    <string name="ingredients_sent_text">Ingredients Sent to Widget</string>
 
     // Strings for the detail ingredient list items
 

@@ -41,7 +41,12 @@ public final class RecipeController {
     }
 
     public Recipe getSelected(){
-        return mRecipeList.get(mSelectedIndex);
+        if(mSelectedIndex > -1 && mSelectedIndex < mRecipeList.size()){
+            return mRecipeList.get(mSelectedIndex);
+        } else {
+            mSelectedIndex = 0;
+            return getSelected();
+        }
     }
 
     public int getSelectedIndex(){
